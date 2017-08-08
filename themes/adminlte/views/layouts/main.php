@@ -85,7 +85,7 @@
                                         <img src="<?= Yii::app()->theme->baseUrl; ?>/dist/img/user-160x160.png" class="img-circle" alt="User Image">
 
                                         <p>
-                                             [nama]
+                                             <?= Yii::app()->user->namaLengkap ?> [<?= Yii::app()->user->name ?>]
                                             <small>Member since Nov. 2012</small>
                                         </p>
                                     </li>
@@ -135,7 +135,7 @@
                             <img src="<?= Yii::app()->theme->baseUrl; ?>/dist/img/user-160x160.png" class="img-circle" alt="User Image">
                         </div>
                         <div class="pull-left info">
-                            <p>Alexander Pierce</p>
+                            <p><?= Yii::app()->user->namaLengkap ?></p>
                             <!-- Status -->
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
