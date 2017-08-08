@@ -145,7 +145,7 @@ class Theme extends CActiveRecord
      */
     public function toCookies()
     {
-        Yii::app()->request->cookies['theme'] = new CHttpCookie('theme', $this->id, ['expire' => time() + 60 * 60 * 24 * 30]);
+        Yii::app()->request->cookies['ahadsdm-theme'] = new CHttpCookie('ahadsdm-theme', $this->id, ['expire' => time() + 60 * 60 * 24 * 30]);
     }
 
     /**
@@ -154,7 +154,7 @@ class Theme extends CActiveRecord
      */
     public function getCookies()
     {
-        return !empty(Yii::app()->request->cookies['theme']->value) ? (string) Yii::app()->request->cookies['theme'] : null;
+        return !empty(Yii::app()->request->cookies['ahadsdm-theme']->value) ? (string) Yii::app()->request->cookies['ahadsdm-theme']->value : null;
     }
 
 }
