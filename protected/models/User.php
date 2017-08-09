@@ -119,6 +119,7 @@ class User extends CActiveRecord
 
         return new CActiveDataProvider($this, [
             'criteria' => $criteria,
+            'pagination' => ['pageSize' => 3]
         ]);
     }
 

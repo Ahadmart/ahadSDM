@@ -8,10 +8,11 @@ $this->breadcrumbs = [
 ];
 
 $this->pageHeader['title'] = 'View';
-$this->pageHeader['desc'] = 'User: ' . $model->nama;
+$this->pageHeader['desc'] = 'User Detail';
+$this->pageHeader['boxTitle'] = 'User: ' . $model->nama;
 ?>
 <div class="row">
-    <div class="small-12 columns">
+    <div class="col-sm-12">
         <?php
         $this->widget('BDetailView', [
             'data' => $model,

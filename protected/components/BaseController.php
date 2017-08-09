@@ -7,10 +7,6 @@ class BaseController extends CController
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
      */
     public $menu = [];
-    public $pageHeader = [
-        'title' => '',
-        'desc' => ''
-    ];
 
     /**
      * @var array the breadcrumbs of the current page. The value of this property will
@@ -18,6 +14,18 @@ class BaseController extends CController
      * for more details on how to specify this property.
      */
     public $breadcrumbs = [];
+
+    public $pageHeader = [
+        'title' => '',
+        'desc' => '',
+        'boxTitle' => ''
+    ];
+
+    public $box = [
+        'type' => 'box-primary',
+        'headerBorder' => true
+    ];
+    public $footer = '';
 
     public function getTheme()
     {

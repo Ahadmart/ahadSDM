@@ -15,18 +15,7 @@
                     ?>
                 </div>
             </div>
-            <div class="box-body">
-                <?= $content; ?>
-            </div>
-            <?php
-            if (!empty($this->footer)):
-                ?>
-                <div class="box-footer">
-                    <?= $this->footer; ?>
-                </div>
-                <?php
-            endif;
-            ?>
+            <?= $content; ?>
         </div>
     </div>
 </div>

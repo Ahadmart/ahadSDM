@@ -11,7 +11,7 @@ class BGridView extends CGridView
     public $summaryText = '{start}-{end} dari {count}';
     public $summaryCssClass = 'dataTables_info';
     public $itemsCssClass = 'table table-bordered table-striped dataTable';
-    public $pagerCssClass = 'pagination-centered';
+    public $pagerCssClass = 'dataTables_paginate paging_simple_numbers';
     public $loadingCssClass = 'grid-loading';
     public $pager = [
         'header' => '',

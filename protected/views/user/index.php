@@ -8,7 +8,9 @@ $this->breadcrumbs = [
 ];
 
 $this->pageHeader['title'] = 'User';
-$this->pageHeader['desc'] = 'Konfigurasi Pengguna';
+$this->pageHeader['desc'] = 'Pengguna';
+$this->pageHeader['boxTitle'] = 'Index';
+
 ?>
 
 <div class="dataTables_wrapper form-inline dt-bootstrap">

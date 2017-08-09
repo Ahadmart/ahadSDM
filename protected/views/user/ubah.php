@@ -9,37 +9,55 @@ $this->breadcrumbs = array(
     'Update',
 );
 
-$this->boxHeader['small'] = 'Ubah';
-$this->boxHeader['normal'] = "User: {$model->nama}";
+$this->pageHeader['title'] = 'Ubah';
+$this->pageHeader['desc'] = 'Edit User Detail';
+$this->pageHeader['boxTitle'] = 'User: ' . $model->nama;
 
 $this->renderPartial('_form', array('model' => $model));
 
-$this->menu = array(
-    array('itemOptions' => array('class' => 'divider'), 'label' => false),
-    array('itemOptions' => array('class' => 'has-form hide-for-small-only'), 'label' => false,
-        'items' => array(
-            array('label' => '<i class="fa fa-plus"></i> <span class="ak">T</span>ambah', 'url' => $this->createUrl('tambah'), 'linkOptions' => array(
-                    'class' => 'button',
+$this->menu = [
+    [
+        'submenuOptions' => ['class' => 'btn-group visible-sm-block visible-md-block visible-lg-block'],
+        'label' => false,
+        'items' => [
+            [
+                'label' => '<i class="fa fa-plus"></i> <span class="ak">T</span>ambah',
+                'url' => $this->createUrl('tambah'),
+                'linkOptions' => [
+                    'class' => 'btn btn-sm btn-default',
                     'accesskey' => 't'
-                )),
-            array('label' => '<i class="fa fa-asterisk"></i> <span class="ak">I</span>ndex', 'url' => $this->createUrl('index'), 'linkOptions' => array(
-                    'class' => 'success button',
+                ]
+            ],
+            [
+                'label' => '<i class="fa fa-asterisk"></i> <span class="ak">I</span>ndex',
+                'url' => $this->createUrl('index'),
+                'linkOptions' => [
+                    'class' => 'btn btn-sm btn-default',
                     'accesskey' => 'i'
-                ))
-        ),
-        'submenuOptions' => array('class' => 'button-group')
-    ),
-    array('itemOptions' => array('class' => 'has-form show-for-small-only'), 'label' => false,
-        'items' => array(
-            array('label' => '<i class="fa fa-plus"></i>', 'url' => $this->createUrl('tambah'), 'linkOptions' => array(
-                    'class' => 'button',
+                ]
+            ]
+        ],
+    ],
+    [
+        'submenuOptions' => ['class' => 'btn-group visible-xs-block'],
+        'label' => false,
+        'items' => [
+            [
+                'label' => '<i class="fa fa-plus"></i>',
+                'url' => $this->createUrl('tambah'),
+                'linkOptions' => [
+                    'class' => 'btn btn-sm btn-default',
                     'accesskey' => 't'
-                )),
-            array('label' => '<i class="fa fa-asterisk"></i>', 'url' => $this->createUrl('index'), 'linkOptions' => array(
-                    'class' => 'success button',
+                ]
+            ],
+            [
+                'label' => '<i class="fa fa-asterisk"></i>',
+                'url' => $this->createUrl('index'),
+                'linkOptions' => [
+                    'class' => 'btn btn-sm btn-primary',
                     'accesskey' => 'i'
-                ))
-        ),
-        'submenuOptions' => array('class' => 'button-group')
-    )
-);
+                ]
+            ]
+        ],
+    ]
+];
