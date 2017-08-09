@@ -85,7 +85,7 @@
                                         <img src="<?= Yii::app()->theme->baseUrl; ?>/dist/img/user-160x160.png" class="img-circle" alt="User Image">
 
                                         <p>
-                                             <?= Yii::app()->user->namaLengkap ?> [<?= Yii::app()->user->name ?>]
+                                            <?= Yii::app()->user->namaLengkap ?> [<?= Yii::app()->user->name ?>]
                                             <small>Member since Nov. 2012</small>
                                         </p>
                                     </li>
@@ -155,9 +155,33 @@
 
                     <!-- Sidebar Menu -->
                     <ul class="sidebar-menu" data-widget="tree">
-                        <li class="header">HEADER</li>
+                        <li class="header">MENU</li>
                         <!-- Optionally, you can add icons to the links -->
-                        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
+                        <?php
+                        $this->widget('application.components.BMenu', [
+//                            'htmlOptions' => ['class' => 'left'],
+                            'activateParents' => true,
+                            'encodeLabel' => false,
+                            'id' => '',
+                            'items' => [
+                                [
+                                    'label' => '<i class="fa fa-user fa-fw"></i><span>' . 'Akses</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>',
+                                    'url' => '',
+                                    'itemOptions' => ['class' => 'treeview'],
+                                    'submenuOptions' => ['class' => 'treeview-menu'],
+                                    'items' => [
+                                        ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' User</span>', 'url' => ['/user/index']],
+                                        ['label' => '<i class="fa fa-shield fa-fw"></i><span>' . ' Otorisasi Item</span>', 'url' => ['/auth/item/index']],
+                                        ['label' => '<i class="fa fa-user-plus fa-fw"></i><span>' . ' User Assignment</span>', 'url' => ['/auth/assignment/index']],
+                                    ],
+                                ],
+                                ['label' => '<i class="fa fa-sliders fa-fw"></i><span>' . ' Aplikasi</span>', 'url' => ['/config/index']],
+                                ['label' => '<i class="fa fa-cog fa-fw"></i><span>' . ' Devices</span>', 'url' => ['/device/index']],
+                                ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' Profil</span>', 'url' => ['/profil/index']],
+                            ]]
+                        );
+                        ?>
+                        <!--<li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>-->
                         <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
                         <li class="treeview">
                             <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
@@ -181,22 +205,26 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Page Header
-                        <small>Optional description</small>
+                        <?= CHtml::encode($this->pageHeader['title']) ?>
+                        <small><?= CHtml::encode(isset($this->pageHeader['desc']) ? $this->pageHeader['desc'] : '') ?></small>
                     </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                        <li class="active">Here</li>
-                    </ol>
+                    <?php
+                    if (isset($this->breadcrumbs)):
+                        $this->widget('zii.widgets.CBreadcrumbs', [
+                            'links' => $this->breadcrumbs,
+                            'tagName' => 'ol',
+                            'activeLinkTemplate' => '<li><a href="{url}">{label}</a></li>',
+                            'inactiveLinkTemplate' => '<li>{label}</li>',
+                            'htmlOptions' => ['class' => 'breadcrumb'],
+                            'separator' => ''
+                        ]);
+                    endif
+                    ?>
                 </section>
 
                 <!-- Main content -->
                 <section class="content container-fluid">
-
-                    <!--------------------------
-                    | Your Page Content Here |
-                    -------------------------->
-
+                    <?php echo $content; ?>
                 </section>
                 <!-- /.content -->
             </div>
@@ -206,10 +234,10 @@
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="pull-right hidden-xs">
-                    Anything you want
+                    Powered by Yiiframework
                 </div>
                 <!-- Default to the left -->
-                <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+                <strong>Copyright &copy; 1438 <a href="#">Ahadmart</a>.</strong> All rights reserved.
             </footer>
 
             <!-- Control Sidebar -->
@@ -278,7 +306,8 @@
         <!-- REQUIRED JS SCRIPTS -->
 
         <!-- jQuery 3 -->
-        <script src="<?= Yii::app()->theme->baseUrl; ?>/bower_components/jquery/dist/jquery.min.js"></script>
+        <!--<script src="<?= Yii::app()->theme->baseUrl; ?>/bower_components/jquery/dist/jquery.min.js"></script> Digantikan dengan yang atas-->
+        <?php Yii::app()->clientScript->registerCoreScript('jquery') ?>
         <!-- Bootstrap 3.3.7 -->
         <script src="<?= Yii::app()->theme->baseUrl; ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- AdminLTE App -->

@@ -3,6 +3,22 @@
 class BaseController extends CController
 {
 
+    /**
+     * @var array context menu items. This property will be assigned to {@link CMenu::items}.
+     */
+    public $menu = [];
+    public $pageHeader = [
+        'title' => '',
+        'desc' => ''
+    ];
+
+    /**
+     * @var array the breadcrumbs of the current page. The value of this property will
+     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
+     * for more details on how to specify this property.
+     */
+    public $breadcrumbs = [];
+
     public function getTheme()
     {
         if (!isset(Yii::app()->user->id)) {

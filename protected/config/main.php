@@ -7,7 +7,7 @@
 return [
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'ahadSDM',
-    //'theme' => 'adminlte', // bootstrap,
+    'theme' => 'adminlte', // bootstrap,
     'defaultController' => 'sistem',
     // preloading 'log' component
     'preload' => ['log'],
@@ -69,6 +69,14 @@ return [
             'class' => 'CDbAuthManager',
             'connectionID' => 'db',
             'defaultRoles' => ['authenticated'],
+        ],
+        'clientScript' => [
+            'packages' => [
+                'jquery' => [
+                    'baseUrl' => 'js',
+                    'js' => ['jquery.min.js']
+                ]
+            ]
         ],
     ],
     // application-level parameters that can be accessed
