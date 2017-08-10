@@ -1,15 +1,15 @@
 <?php
 
-/* @var $this CabangController */
-/* @var $model Cabang */
+/* @var $this JabatanController */
+/* @var $model Jabatan */
 
 $this->breadcrumbs = [
-    'Cabang' => ['index'],
+    'Jabatan' => ['index'],
     'Tambah',
 ];
 
 $this->pageHeader['title'] = 'Tambah';
-$this->pageHeader['desc'] = 'Buat Cabang Baru';
+$this->pageHeader['desc'] = 'Buat Jabatan Baru';
 $this->pageHeader['boxTitle'] = 'Input';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];

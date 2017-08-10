@@ -41,11 +41,9 @@ class User extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return [
-            ['nama', 'required', 'message' => '{attribute} tidak boleh kosong'],
-            //array('last_ipaddress', 'numerical', 'integerOnly' => true),
+            ['nama', 'required', 'message' => '[{attribute}] harus diisi!'],
             ['newPassword, newPasswordRepeat', 'required', 'on' => 'create'],
             ['newPassword', 'compare', 'compareAttribute' => 'newPasswordRepeat'],
-            //array('updated_by', 'numerical', 'integerOnly'=>true),
             ['nama', 'length', 'max' => 45],
             ['nama_lengkap', 'length', 'max' => 100],
             ['password', 'length', 'max' => 512],

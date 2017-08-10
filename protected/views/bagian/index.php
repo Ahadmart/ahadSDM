@@ -1,14 +1,14 @@
 <?php
-/* @var $this CabangController */
-/* @var $model Cabang */
+/* @var $this BagianController */
+/* @var $model Bagian */
 
 $this->breadcrumbs = [
-    'Cabang' => array('index'),
+    'Bagian' => array('index'),
     'Index',
 ];
 
-$this->pageHeader['title'] = 'Cabang';
-$this->pageHeader['desc'] = 'Daftar Cabang';
+$this->pageHeader['title'] = 'Bagian';
+$this->pageHeader['desc'] = 'Daftar Bagian';
 $this->pageHeader['boxTitle'] = 'Index';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
@@ -22,7 +22,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
         <div class="col-sm-12">
             <?php
             $this->widget('BGridView', [
-                'id' => 'cabang-grid',
+                'id' => 'bagian-grid',
                 'dataProvider' => $model->search(),
                 'filter' => $model,
                 'htmlOptions' => ['style' => 'width: 100%'],
@@ -37,11 +37,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'alamat'
-                    ],
-                    [
-                        'class' => 'BDataColumn',
-                        'name' => 'telpon'
+                        'name' => 'keterangan'
                     ],
                     ['class' => 'BButtonColumn']
                 ]

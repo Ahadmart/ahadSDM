@@ -170,8 +170,8 @@
                                     'submenuOptions' => ['class' => 'treeview-menu'],
                                     'items' => [
                                         ['label' => '<i class="fa fa-sitemap fa-fw"></i><span>' . ' Cabang</span>', 'url' => ['/cabang/index']],
-                                        ['label' => '<i class="fa fa-user-circle-o fa-fw"></i><span>' . ' Bagian</span>', 'url' => ['']],
-                                        ['label' => '<i class="fa fa-user-secret fa-fw"></i><span>' . ' Jabatan</span>', 'url' => ['']],
+                                        ['label' => '<i class="fa fa-user-circle-o fa-fw"></i><span>' . ' Bagian</span>', 'url' => ['/bagian/index']],
+                                        ['label' => '<i class="fa fa-user-secret fa-fw"></i><span>' . ' Jabatan</span>', 'url' => ['/jabatan/index']],
                                     ],
                                 ],
                                 [

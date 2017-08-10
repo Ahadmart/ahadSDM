@@ -1,13 +1,12 @@
 <?php
 
 /**
- * This is the model class for table "cabang".
+ * This is the model class for table "bagian".
  *
- * The followings are the available columns in table 'cabang':
+ * The followings are the available columns in table 'bagian':
  * @property string $id
  * @property string $nama
- * @property string $alamat
- * @property string $telpon
+ * @property string $keterangan
  * @property string $updated_at
  * @property string $updated_by
  * @property string $created_at
@@ -16,7 +15,7 @@
  * @property User $updatedBy
  * @property Pegawai[] $pegawais
  */
-class Cabang extends CActiveRecord
+class Bagian extends CActiveRecord
 {
 
     /**
@@ -24,7 +23,7 @@ class Cabang extends CActiveRecord
      */
     public function tableName()
     {
-        return 'cabang';
+        return 'bagian';
     }
 
     /**
@@ -37,12 +36,12 @@ class Cabang extends CActiveRecord
         return array(
             array('nama', 'required', 'message' => '[{attribute}] harus diisi!'),
             array('nama', 'length', 'max' => 50),
-            array('alamat, telpon', 'length', 'max' => 500),
+            array('keterangan', 'length', 'max' => 500),
             array('updated_by', 'length', 'max' => 10),
             array('created_at, updated_at, updated_by', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, nama, alamat, telpon, updated_at, updated_by, created_at', 'safe', 'on' => 'search'),
+            array('id, nama, keterangan, updated_at, updated_by, created_at', 'safe', 'on' => 'search'),
         );
     }
 
@@ -55,7 +54,7 @@ class Cabang extends CActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
-            'pegawais' => array(self::HAS_MANY, 'Pegawai', 'cabang_id'),
+            'pegawais' => array(self::HAS_MANY, 'Pegawai', 'bagian_id'),
         );
     }
 
@@ -67,8 +66,7 @@ class Cabang extends CActiveRecord
         return array(
             'id' => 'ID',
             'nama' => 'Nama',
-            'alamat' => 'Alamat',
-            'telpon' => 'Telpon',
+            'keterangan' => 'Keterangan',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
@@ -95,8 +93,7 @@ class Cabang extends CActiveRecord
 
         $criteria->compare('id', $this->id, true);
         $criteria->compare('nama', $this->nama, true);
-        $criteria->compare('alamat', $this->alamat, true);
-        $criteria->compare('telpon', $this->telpon, true);
+        $criteria->compare('keterangan', $this->keterangan, true);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
@@ -110,7 +107,7 @@ class Cabang extends CActiveRecord
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Cabang the static model class
+     * @return Bagian the static model class
      */
     public static function model($className = __CLASS__)
     {

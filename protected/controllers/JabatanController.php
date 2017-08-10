@@ -1,6 +1,6 @@
 <?php
 
-class CabangController extends Controller
+class JabatanController extends Controller
 {
 
     /**
@@ -22,13 +22,13 @@ class CabangController extends Controller
     {
         $this->layout = '//layouts/box_form';
 
-        $model = new Cabang;
+        $model = new Jabatan;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Cabang'])) {
-            $model->attributes = $_POST['Cabang'];
+        if (isset($_POST['Jabatan'])) {
+            $model->attributes = $_POST['Jabatan'];
             if ($model->save()) {
                 $this->redirect(['view', 'id' => $model->id]);
             }
@@ -52,8 +52,8 @@ class CabangController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Cabang'])) {
-            $model->attributes = $_POST['Cabang'];
+        if (isset($_POST['Jabatan'])) {
+            $model->attributes = $_POST['Jabatan'];
             if ($model->save()) {
                 $this->redirect(['view', 'id' => $id]);
             }
@@ -83,10 +83,10 @@ class CabangController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Cabang('search');
+        $model = new Jabatan('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Cabang'])) {
-            $model->attributes = $_GET['Cabang'];
+        if (isset($_GET['Jabatan'])) {
+            $model->attributes = $_GET['Jabatan'];
         }
 
         $this->render('index', [
@@ -98,12 +98,12 @@ class CabangController extends Controller
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Cabang the loaded model
+     * @return Jabatan the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model = Cabang::model()->findByPk($id);
+        $model = Jabatan::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -111,11 +111,11 @@ class CabangController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param Cabang $model the model to be validated
+     * @param Jabatan $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'cabang-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'jabatan-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

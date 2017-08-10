@@ -8,8 +8,7 @@ $this->breadcrumbs = [
 ];
 
 $this->pageHeader['title'] = 'User';
-$this->pageHeader['desc'] = 'Pengguna';
-'Daftar User';
+$this->pageHeader['desc'] = 'Daftar Pengguna';
 $this->pageHeader['boxTitle'] = 'Index';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];

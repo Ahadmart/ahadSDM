@@ -1,20 +1,19 @@
 <?php
+/* @var $this BagianController */
+/* @var $model Bagian */
 
-/* @var $this CabangController */
-/* @var $model Cabang */
-
-$this->breadcrumbs = [
-    'Cabang' => ['index'],
-    'Tambah',
+$this->breadcrumbs=[
+	'Bagian'=>['index'],
+	'Tambah',
 ];
 
 $this->pageHeader['title'] = 'Tambah';
-$this->pageHeader['desc'] = 'Buat Cabang Baru';
+$this->pageHeader['desc'] = 'Buat Bagian Baru';
 $this->pageHeader['boxTitle'] = 'Input';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
 
-$this->renderPartial('_form', ['model' => $model]);
+$this->renderPartial('_form', ['model'=>$model]);
 
 $this->menu = [
     [

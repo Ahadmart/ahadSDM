@@ -1,15 +1,15 @@
 <?php
-/* @var $this CabangController */
-/* @var $model Cabang */
+/* @var $this JabatanController */
+/* @var $model Jabatan */
 
 $this->breadcrumbs = [
-    'Cabang' => ['index'],
+    'Jabatan' => ['index'],
     $model->nama,
 ];
 
 $this->pageHeader['title'] = 'View';
-$this->pageHeader['desc'] = 'Cabang';
-$this->pageHeader['boxTitle'] = 'Cabang: ' . $model->nama;
+$this->pageHeader['desc'] = 'Jabatan';
+$this->pageHeader['boxTitle'] = 'Jabatan: ' . $model->nama;
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->nama;
 ?>
@@ -20,8 +20,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . 
             'data' => $model,
             'attributes' => [
                 'nama',
-                'alamat',
-                'telpon'
+                'keterangan',
             ],
         ]);
         ?>
