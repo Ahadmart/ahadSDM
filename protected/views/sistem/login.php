@@ -6,26 +6,26 @@
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
         <?php
-        $form = $this->beginWidget('CActiveForm', array(
+        $form = $this->beginWidget('CActiveForm', [
             'id' => 'login-form',
             //'enableClientValidation' => true,
-            'clientOptions' => array(
+            'clientOptions' => [
                 'validateOnSubmit' => true,
             //'inputContainer' => '.input'
-            ),
-        ));
+            ],
+        ]);
         ?>
         <div class="form-group has-feedback">
-            <?php echo $form->textField($model, 'username', array('placeholder' => 'Nama User', 'class' => 'form-control', 'accesskey' => 'n', 'autofocus' => 'autofocus', 'autocomplete' => 'off')); ?>
+            <?php echo $form->textField($model, 'username', ['placeholder' => 'Nama User', 'class' => 'form-control', 'accesskey' => 'n', 'autofocus' => 'autofocus', 'autocomplete' => 'off']); ?>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <?php echo $form->error($model, 'username', ['class' => 'bg-red']); ?>
         </div>
-        <?php echo $form->error($model, 'username', array('class' => 'error')); ?>
 
         <div class="form-group has-feedback">
-            <?php echo $form->passwordField($model, 'password', array('placeholder' => 'Password', 'class' => 'form-control', 'accesskey' => 'p', 'autocomplete' => 'off')); ?>
+            <?php echo $form->passwordField($model, 'password', ['placeholder' => 'Password', 'class' => 'form-control', 'accesskey' => 'p', 'autocomplete' => 'off']); ?>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <?php echo $form->error($model, 'password', ['class' => 'bg-red']); ?>
         </div>
-        <?php echo $form->error($model, 'password', array('class' => 'error')); ?>
 
         <div class="row">
             <div class="col-xs-8">

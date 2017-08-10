@@ -128,4 +128,9 @@ class Cabang extends CActiveRecord
         return parent::beforeSave();
     }
 
+    public static function getList()
+    {
+        return CHtml::listData(self::model()->findAll(['select' => 'id,nama', 'order' => 'nama']), 'id', 'nama');
+    }
+
 }

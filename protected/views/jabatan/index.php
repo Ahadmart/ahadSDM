@@ -3,7 +3,7 @@
 /* @var $model Jabatan */
 
 $this->breadcrumbs = [
-    'Jabatan' => array('index'),
+    'Jabatan' => ['index'],
     'Index',
 ];
 

@@ -1,14 +1,14 @@
 <?php
-/* @var $this BagianController */
-/* @var $model Bagian */
+/* @var $this PegawaiController */
+/* @var $model Pegawai */
 
 $this->breadcrumbs = [
-    'Bagian' => ['index'],
+    'Pegawai' => ['index'],
     'Index',
 ];
 
-$this->pageHeader['title'] = 'Bagian';
-$this->pageHeader['desc'] = 'Daftar Bagian';
+$this->pageHeader['title'] = 'Pegawai';
+$this->pageHeader['desc'] = 'Daftar Pegawai';
 $this->pageHeader['boxTitle'] = 'Index';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
@@ -22,7 +22,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
         <div class="col-sm-12">
             <?php
             $this->widget('BGridView', [
-                'id' => 'bagian-grid',
+                'id' => 'pegawai-grid',
                 'dataProvider' => $model->search(),
                 'filter' => $model,
                 'htmlOptions' => ['style' => 'width: 100%'],
@@ -37,7 +37,31 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'keterangan'
+                        'name' => 'alamat'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'tanggal_lahir'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'jabatan_id'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'bagian_id'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'cabang_id'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'telpon'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'perusahaan'
                     ],
                     ['class' => 'BButtonColumn']
                 ]

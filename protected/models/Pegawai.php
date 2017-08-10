@@ -1,21 +1,32 @@
 <?php
 
 /**
- * This is the model class for table "jabatan".
+ * This is the model class for table "pegawai".
  *
- * The followings are the available columns in table 'jabatan':
+ * The followings are the available columns in table 'pegawai':
  * @property string $id
+ * @property string $nip
  * @property string $nama
- * @property string $keterangan
+ * @property string $alamat
+ * @property string $tanggal_lahir
+ * @property string $jabatan_id
+ * @property string $bagian_id
+ * @property string $cabang_id
+ * @property string $telpon
+ * @property string $perusahaan
  * @property string $updated_at
  * @property string $updated_by
  * @property string $created_at
  *
  * The followings are the available model relations:
+ * @property Bagian $bagian
+ * @property Cabang $cabang
+ * @property Jabatan $jabatan
  * @property User $updatedBy
- * @property Pegawai[] $pegawais
+ * @property PegawaiConfig[] $pegawaiConfigs
+ * @property PegawaiCuti[] $pegawaiCutis
  */
-class Jabatan extends CActiveRecord
+class Pegawai extends CActiveRecord
 {
 
     /**
@@ -23,7 +34,7 @@ class Jabatan extends CActiveRecord
      */
     public function tableName()
     {
-        return 'jabatan';
+        return 'pegawai';
     }
 
     /**
@@ -33,16 +44,16 @@ class Jabatan extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return [
-            ['nama', 'required', 'message' => '[{attribute}] harus diisi!'],
-            ['nama', 'length', 'max' => 50],
-            ['keterangan', 'length', 'max' => 500],
-            ['updated_by', 'length', 'max' => 10],
-            ['created_at, updated_at, updated_by', 'safe'],
+        return array(
+            array('nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon', 'required', 'message' => '[{attribute}] harus diisi!'),
+            array('nip, nama, telpon, perusahaan', 'length', 'max' => 50),
+            array('alamat', 'length', 'max' => 250),
+            array('jabatan_id, bagian_id, cabang_id, updated_by', 'length', 'max' => 10),
+            array('created_at, updated_at, updated_by', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            ['id, nama, keterangan, updated_at, updated_by, created_at', 'safe', 'on' => 'search'],
-        ];
+            array('id, nip, nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon, perusahaan, updated_at, updated_by, created_at', 'safe', 'on' => 'search'),
+        );
     }
 
     /**
@@ -52,10 +63,14 @@ class Jabatan extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return [
-            'updatedBy' => [self::BELONGS_TO, 'User', 'updated_by'],
-            'pegawais' => [self::HAS_MANY, 'Pegawai', 'jabatan_id'],
-        ];
+        return array(
+            'bagian' => array(self::BELONGS_TO, 'Bagian', 'bagian_id'),
+            'cabang' => array(self::BELONGS_TO, 'Cabang', 'cabang_id'),
+            'jabatan' => array(self::BELONGS_TO, 'Jabatan', 'jabatan_id'),
+            'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
+            'pegawaiConfigs' => array(self::HAS_MANY, 'PegawaiConfig', 'pegawai_id'),
+            'pegawaiCutis' => array(self::HAS_MANY, 'PegawaiCuti', 'pegawai_id'),
+        );
     }
 
     /**
@@ -63,14 +78,21 @@ class Jabatan extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return [
+        return array(
             'id' => 'ID',
+            'nip' => 'NIP',
             'nama' => 'Nama',
-            'keterangan' => 'Keterangan',
+            'alamat' => 'Alamat',
+            'tanggal_lahir' => 'Tanggal Lahir',
+            'jabatan_id' => 'Jabatan',
+            'bagian_id' => 'Bagian',
+            'cabang_id' => 'Cabang',
+            'telpon' => 'Telpon',
+            'perusahaan' => 'Perusahaan',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
-        ];
+        );
     }
 
     /**
@@ -92,22 +114,29 @@ class Jabatan extends CActiveRecord
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id, true);
+        $criteria->compare('nip', $this->nip, true);
         $criteria->compare('nama', $this->nama, true);
-        $criteria->compare('keterangan', $this->keterangan, true);
+        $criteria->compare('alamat', $this->alamat, true);
+        $criteria->compare('tanggal_lahir', $this->tanggal_lahir, true);
+        $criteria->compare('jabatan_id', $this->jabatan_id, true);
+        $criteria->compare('bagian_id', $this->bagian_id, true);
+        $criteria->compare('cabang_id', $this->cabang_id, true);
+        $criteria->compare('telpon', $this->telpon, true);
+        $criteria->compare('perusahaan', $this->perusahaan, true);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
 
-        return new CActiveDataProvider($this, [
+        return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
-        ]);
+        ));
     }
 
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Jabatan the static model class
+     * @return Pegawai the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -123,11 +152,6 @@ class Jabatan extends CActiveRecord
         $this->updated_at = null; // Trigger current timestamp
         $this->updated_by = Yii::app()->user->id;
         return parent::beforeSave();
-    }
-
-    public static function getList()
-    {
-        return CHtml::listData(self::model()->findAll(['select' => 'id,nama', 'order' => 'nama']), 'id', 'nama');
     }
 
 }

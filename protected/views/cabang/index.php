@@ -3,7 +3,7 @@
 /* @var $model Cabang */
 
 $this->breadcrumbs = [
-    'Cabang' => array('index'),
+    'Cabang' => ['index'],
     'Index',
 ];
 
