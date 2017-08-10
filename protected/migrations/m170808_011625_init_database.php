@@ -93,7 +93,7 @@ class m170808_011625_init_database extends CDbMigration
                 ), 'ENGINE=' . $dbEngine . ' DEFAULT CHARSET=utf8');
 
         $this->insertMultiple('theme', array(
-            array('id' => 1, 'nama' => 'default', 'deskripsi' => 'AdminLTE', 'updated_at' => '2000-01-01 00:00:00', 'updated_by' => 1, 'created_at' => '2000-01-01 00:00:00'),
+            array('id' => 1, 'nama' => 'adminlte', 'deskripsi' => 'AdminLTE', 'updated_at' => '2000-01-01 00:00:00', 'updated_by' => 1, 'created_at' => '2000-01-01 00:00:00'),
         ));
 
         $this->addForeignKey('AuthAssignment_ibfk_1', 'AuthAssignment', 'itemname', 'AuthItem', 'name', 'CASCADE', 'CASCADE');

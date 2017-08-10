@@ -16,7 +16,7 @@ class BButtonColumn extends CButtonColumn {
 	public $deleteButtonUrl = 'Yii::app()->controller->createUrl("hapus", array("id"=>$data->primaryKey))';
 	public $deleteButtonImageUrl = false;
 	public $deleteButtonLabel = '<i class="fa fa-times"></i>';
-	public $deleteButtonOptions = ['title' => 'Hapus'];
+	public $deleteButtonOptions = ['title' => 'Hapus', 'class' => 'text-red'];
 	public $deleteConfirmation = 'Anda yakin?';
 
 }

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>AdminLTE 2 | Starter</title>
+        <title><?php echo CHtml::encode($this->pageTitle); ?></title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="stylesheet" href="<?= Yii::app()->theme->baseUrl; ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -53,7 +53,7 @@
             <header class="main-header">
 
                 <!-- Logo -->
-                <a href="index2.html" class="logo">
+                <a href="<?= Yii::app()->request->baseUrl ?>" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>A</b>S</span>
                     <!-- logo for regular state and mobile devices -->
@@ -159,41 +159,37 @@
                         <!-- Optionally, you can add icons to the links -->
                         <?php
                         $this->widget('application.components.BMenu', [
-//                            'htmlOptions' => ['class' => 'left'],
                             'activateParents' => true,
                             'encodeLabel' => false,
                             'id' => '',
                             'items' => [
                                 [
-                                    'label' => '<i class="fa fa-user fa-fw"></i><span>' . 'Akses</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>',
+                                    'label' => '<i class="fa fa-database fa-fw"></i><span>' . 'Master Data</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>',
+                                    'url' => '',
+                                    'itemOptions' => ['class' => 'treeview'],
+                                    'submenuOptions' => ['class' => 'treeview-menu'],
+                                    'items' => [
+                                        ['label' => '<i class="fa fa-sitemap fa-fw"></i><span>' . ' Cabang</span>', 'url' => ['/cabang/index']],
+                                        ['label' => '<i class="fa fa-user-circle-o fa-fw"></i><span>' . ' Bagian</span>', 'url' => ['']],
+                                        ['label' => '<i class="fa fa-user-secret fa-fw"></i><span>' . ' Jabatan</span>', 'url' => ['']],
+                                    ],
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-wrench fa-fw"></i><span>' . 'Config</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>',
                                     'url' => '',
                                     'itemOptions' => ['class' => 'treeview'],
                                     'submenuOptions' => ['class' => 'treeview-menu'],
                                     'items' => [
                                         ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' User</span>', 'url' => ['/user/index']],
                                         ['label' => '<i class="fa fa-shield fa-fw"></i><span>' . ' Otorisasi Item</span>', 'url' => ['/auth/item/index']],
-                                        ['label' => '<i class="fa fa-user-plus fa-fw"></i><span>' . ' User Assignment</span>', 'url' => ['/auth/assignment/index']],
                                     ],
                                 ],
-                                ['label' => '<i class="fa fa-sliders fa-fw"></i><span>' . ' Aplikasi</span>', 'url' => ['/config/index']],
-                                ['label' => '<i class="fa fa-cog fa-fw"></i><span>' . ' Devices</span>', 'url' => ['/device/index']],
-                                ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' Profil</span>', 'url' => ['/profil/index']],
+//                                ['label' => '<i class="fa fa-sliders fa-fw"></i><span>' . ' Aplikasi</span>', 'url' => ['/config/index']],
+//                                ['label' => '<i class="fa fa-cog fa-fw"></i><span>' . ' Devices</span>', 'url' => ['/device/index']],
+//                                ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' Profil</span>', 'url' => ['/profil/index']],
                             ]]
                         );
                         ?>
-                        <!--<li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>-->
-                        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-                        <li class="treeview">
-                            <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#">Link in level 2</a></li>
-                                <li><a href="#">Link in level 2</a></li>
-                            </ul>
-                        </li>
                     </ul>
                     <!-- /.sidebar-menu -->
                 </section>

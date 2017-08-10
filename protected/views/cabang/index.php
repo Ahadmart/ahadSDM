@@ -1,20 +1,18 @@
 <?php
-/* @var $this UserController */
-/* @var $model User */
+/* @var $this CabangController */
+/* @var $model Cabang */
 
 $this->breadcrumbs = [
-    'User' => ['index'],
+    'Cabang' => ['index'],
     'Index',
 ];
 
-$this->pageHeader['title'] = 'User';
-$this->pageHeader['desc'] = 'Pengguna';
-'Daftar User';
+$this->pageHeader['title'] = 'Cabang';
+$this->pageHeader['desc'] = 'Daftar Cabang';
 $this->pageHeader['boxTitle'] = 'Index';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
 ?>
-
 <div class="dataTables_wrapper form-inline dt-bootstrap">
     <div class="row">
         <div class="col-sm-6">
@@ -24,9 +22,10 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
         <div class="col-sm-12">
             <?php
             $this->widget('BGridView', [
-                'id' => 'user-grid',
+                'id' => 'cabang-grid',
                 'dataProvider' => $model->search(),
                 'filter' => $model,
+                'htmlOptions' => ['style' => 'width: 100%'],
                 'columns' => [
                     [
                         'class' => 'BDataColumn',
@@ -38,7 +37,11 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'nama_lengkap',
+                        'name' => 'alamat'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'telpon'
                     ],
                     [
                         'class' => 'BButtonColumn',
@@ -80,3 +83,4 @@ $this->menu = [
         ],
     ]
 ];
+

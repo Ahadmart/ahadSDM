@@ -3,16 +3,18 @@
 /* @var $this UserController */
 /* @var $model User */
 
-$this->breadcrumbs = array(
-    'User' => array('index'),
+$this->breadcrumbs = [
+    'User' => ['index'],
     'Tambah',
-);
+];
 
 $this->pageHeader['title'] = 'Tambah';
 $this->pageHeader['desc'] = 'Buat User Baru';
 $this->pageHeader['boxTitle'] = 'Input';
 
-$this->renderPartial('_form', array('model' => $model));
+$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
+
+$this->renderPartial('_form', ['model' => $model]);
 
 $this->menu = [
     [

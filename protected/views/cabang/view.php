@@ -1,17 +1,17 @@
 <?php
-/* @var $this KategoribarangController */
-/* @var $model KategoriBarang */
+/* @var $this CabangController */
+/* @var $model Cabang */
 
 $this->breadcrumbs = [
-    'User' => ['index'],
+    'Cabang' => ['index'],
     $model->nama,
 ];
 
 $this->pageHeader['title'] = 'View';
-$this->pageHeader['desc'] = 'User Detail';
-$this->pageHeader['boxTitle'] = 'User: ' . $model->nama;
+$this->pageHeader['desc'] = 'Cabang';
+$this->pageHeader['boxTitle'] = 'Cabang: ' . $model->nama;
 
-$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
+$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->nama;
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -20,7 +20,8 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
             'data' => $model,
             'attributes' => [
                 'nama',
-                'nama_lengkap'
+                'alamat',
+                'telpon',
             ],
         ]);
         ?>
