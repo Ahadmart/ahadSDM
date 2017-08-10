@@ -49,7 +49,6 @@ $this->menu = [
                 'url' => $this->createUrl('tambah'),
                 'linkOptions' => [
                     'class' => 'btn btn-sm btn-default',
-                    'accesskey' => 't'
                 ]
             ],
             [
@@ -57,7 +56,6 @@ $this->menu = [
                 'url' => $this->createUrl('index'),
                 'linkOptions' => [
                     'class' => 'btn btn-sm btn-primary',
-                    'accesskey' => 'i'
                 ]
             ]
         ],

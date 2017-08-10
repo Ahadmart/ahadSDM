@@ -40,7 +40,6 @@ $this->menu = [
                 'url' => $this->createUrl('index'),
                 'linkOptions' => [
                     'class' => 'btn btn-sm btn-primary',
-                    'accesskey' => 'i'
                 ]
             ]
         ],

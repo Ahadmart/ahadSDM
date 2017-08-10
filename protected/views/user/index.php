@@ -74,7 +74,6 @@ $this->menu = [
                 'url' => $this->createUrl('tambah'),
                 'linkOptions' => [
                     'class' => 'btn btn-sm btn-default',
-                    'accesskey' => 't'
                 ]
             ],
         ],

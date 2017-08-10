@@ -69,7 +69,6 @@ $this->menu = [
                 'url' => $this->createUrl('ubah', ['id' => $model->id]),
                 'linkOptions' => [
                     'class' => 'btn btn-sm btn-primary',
-                    'accesskey' => 'u'
                 ]
             ],
             [
@@ -77,7 +76,6 @@ $this->menu = [
                 'url' => $this->createUrl('hapus', ['id' => $model->id]),
                 'linkOptions' => [
                     'class' => 'btn btn-sm btn-primary',
-                    'accesskey' => 'h',
                     'submit' => ['hapus', 'id' => $model->id],
                     'confirm' => 'Anda yakin?'
                 ]
@@ -87,7 +85,6 @@ $this->menu = [
                 'url' => $this->createUrl('index'),
                 'linkOptions' => [
                     'class' => 'btn btn-sm btn-primary',
-                    'accesskey' => 'i'
                 ]
             ]
         ],
