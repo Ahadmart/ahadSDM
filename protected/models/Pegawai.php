@@ -29,6 +29,11 @@
 class Pegawai extends CActiveRecord
 {
 
+    public $namaCabang;
+    public $namaBagian;
+    public $namaJabatan;
+    public $namaPegawai;
+
     /**
      * @return string the associated database table name
      */
@@ -44,16 +49,16 @@ class Pegawai extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon', 'required', 'message' => '[{attribute}] harus diisi!'),
-            array('nip, nama, telpon, perusahaan', 'length', 'max' => 50),
-            array('alamat', 'length', 'max' => 250),
-            array('jabatan_id, bagian_id, cabang_id, updated_by', 'length', 'max' => 10),
-            array('created_at, updated_at, updated_by', 'safe'),
+        return [
+            ['nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon', 'required', 'message' => '[{attribute}] harus diisi!'],
+            ['nip, nama, telpon, perusahaan', 'length', 'max' => 50],
+            ['alamat', 'length', 'max' => 250],
+            ['jabatan_id, bagian_id, cabang_id, updated_by', 'length', 'max' => 10],
+            ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, nip, nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon, perusahaan, updated_at, updated_by, created_at', 'safe', 'on' => 'search'),
-        );
+            ['id, nip, nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon, perusahaan, updated_at, updated_by, created_at, namaPegawai', 'safe', 'on' => 'search'],
+        ];
     }
 
     /**
@@ -63,14 +68,14 @@ class Pegawai extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'bagian' => array(self::BELONGS_TO, 'Bagian', 'bagian_id'),
-            'cabang' => array(self::BELONGS_TO, 'Cabang', 'cabang_id'),
-            'jabatan' => array(self::BELONGS_TO, 'Jabatan', 'jabatan_id'),
-            'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
-            'pegawaiConfigs' => array(self::HAS_MANY, 'PegawaiConfig', 'pegawai_id'),
-            'pegawaiCutis' => array(self::HAS_MANY, 'PegawaiCuti', 'pegawai_id'),
-        );
+        return [
+            'bagian' => [self::BELONGS_TO, 'Bagian', 'bagian_id'],
+            'cabang' => [self::BELONGS_TO, 'Cabang', 'cabang_id'],
+            'jabatan' => [self::BELONGS_TO, 'Jabatan', 'jabatan_id'],
+            'updatedBy' => [self::BELONGS_TO, 'User', 'updated_by'],
+            'pegawaiConfigs' => [self::HAS_MANY, 'PegawaiConfig', 'pegawai_id'],
+            'pegawaiCutis' => [self::HAS_MANY, 'PegawaiCuti', 'pegawai_id'],
+        ];
     }
 
     /**
@@ -78,7 +83,7 @@ class Pegawai extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id' => 'ID',
             'nip' => 'NIP',
             'nama' => 'Nama',
@@ -92,7 +97,7 @@ class Pegawai extends CActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
-        );
+        ];
     }
 
     /**
@@ -127,9 +132,9 @@ class Pegawai extends CActiveRecord
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
 
-        return new CActiveDataProvider($this, array(
+        return new CActiveDataProvider($this, [
             'criteria' => $criteria,
-        ));
+        ]);
     }
 
     /**
@@ -164,6 +169,14 @@ class Pegawai extends CActiveRecord
     {
         $this->tanggal_lahir = !is_null($this->tanggal_lahir) ? date_format(date_create_from_format('Y-m-d', $this->tanggal_lahir), 'd-m-Y') : '0';
         return parent::afterFind();
+    }
+
+    public static function getListPanjang()
+    {
+        $model = self::model()->with(['cabang', 'bagian', 'jabatan'])->findAll(['select' => 't.id, t.nama, cabang.nama as namaCabang, bagian.nama as namaBagian, jabatan.nama as namaJabatan', 'order' => 't.nama']);
+        return CHtml::listData($model, 'id', function($model) {
+                    return $model->nama . ' [ ' . $model->namaCabang . ' | ' . $model->namaBagian . ' | ' . $model->namaJabatan . ' ]';
+                });
     }
 
 }

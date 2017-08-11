@@ -172,7 +172,8 @@
                                         ['label' => '<i class="fa fa-sitemap fa-fw"></i><span>' . ' Cabang</span>', 'url' => ['/cabang/index']],
                                         ['label' => '<i class="fa fa-user-circle-o fa-fw"></i><span>' . ' Bagian</span>', 'url' => ['/bagian/index']],
                                         ['label' => '<i class="fa fa-user-secret fa-fw"></i><span>' . ' Jabatan</span>', 'url' => ['/jabatan/index']],
-                                        ['label' => '<i class="fa fa-user-o fa-fw"></i><span>' . ' Pegawai</span>', 'url' => ['/pegawai/index']],
+                                        ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' Pegawai</span>', 'url' => ['/pegawai/index']],
+                                        ['label' => '<i class="fa fa-user-o fa-fw"></i><span>' . ' Pegawai (Config)</span>', 'url' => ['/pegawaiconfig/index']],
                                     ],
                                 ],
                                 [
@@ -182,7 +183,7 @@
                                     'submenuOptions' => ['class' => 'treeview-menu'],
                                     'items' => [
                                         ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' User</span>', 'url' => ['/user/index']],
-                                        ['label' => '<i class="fa fa-shield fa-fw"></i><span>' . ' Otorisasi Item</span>', 'url' => ['/auth/item/index']],
+//                                        ['label' => '<i class="fa fa-shield fa-fw"></i><span>' . ' Otorisasi Item</span>', 'url' => ['/auth/item/index']],
                                     ],
                                 ],
 //                                ['label' => '<i class="fa fa-sliders fa-fw"></i><span>' . ' Aplikasi</span>', 'url' => ['/config/index']],
