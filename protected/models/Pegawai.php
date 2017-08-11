@@ -113,14 +113,14 @@ class Pegawai extends CActiveRecord
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id, true);
+        $criteria->compare('id', $this->id);
         $criteria->compare('nip', $this->nip, true);
         $criteria->compare('nama', $this->nama, true);
         $criteria->compare('alamat', $this->alamat, true);
-        $criteria->compare('tanggal_lahir', $this->tanggal_lahir, true);
-        $criteria->compare('jabatan_id', $this->jabatan_id, true);
-        $criteria->compare('bagian_id', $this->bagian_id, true);
-        $criteria->compare('cabang_id', $this->cabang_id, true);
+        $criteria->compare("DATE_FORMAT(t.tanggal_lahir, '%d-%m-%Y')", $this->tanggal_lahir, true);
+        $criteria->compare('jabatan_id', $this->jabatan_id);
+        $criteria->compare('bagian_id', $this->bagian_id);
+        $criteria->compare('cabang_id', $this->cabang_id);
         $criteria->compare('telpon', $this->telpon, true);
         $criteria->compare('perusahaan', $this->perusahaan, true);
         $criteria->compare('updated_at', $this->updated_at, true);
@@ -152,6 +152,18 @@ class Pegawai extends CActiveRecord
         $this->updated_at = null; // Trigger current timestamp
         $this->updated_by = Yii::app()->user->id;
         return parent::beforeSave();
+    }
+
+    public function beforeValidate()
+    {
+        $this->tanggal_lahir = !empty($this->tanggal_lahir) ? date_format(date_create_from_format('d-m-Y', $this->tanggal_lahir), 'Y-m-d') : NULL;
+        return parent::beforeValidate();
+    }
+
+    public function afterFind()
+    {
+        $this->tanggal_lahir = !is_null($this->tanggal_lahir) ? date_format(date_create_from_format('Y-m-d', $this->tanggal_lahir), 'd-m-Y') : '0';
+        return parent::afterFind();
     }
 
 }

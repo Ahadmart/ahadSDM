@@ -52,7 +52,7 @@ class m170810_021040_initdb_sdm extends CDbMigration
               `nip` varchar(50) DEFAULT NULL,
               `nama` varchar(50) NOT NULL,
               `alamat` varchar(250) NOT NULL,
-              `tanggal_lahir` datetime NOT NULL,
+              `tanggal_lahir` date NOT NULL,
               `jabatan_id` int(10) unsigned NOT NULL,
               `bagian_id` int(10) unsigned NOT NULL,
               `cabang_id` int(10) unsigned NOT NULL,

@@ -2,6 +2,8 @@
 /* @var $this PegawaiController */
 /* @var $model Pegawai */
 /* @var $form CActiveForm */
+Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js', CClientScript::POS_HEAD);
 ?>
 
 <?php
@@ -44,12 +46,28 @@ $form = $this->beginWidget('CActiveForm', [
                     <?php echo $form->error($model, 'alamat', ['class' => 'bg-red']); ?>
                 </div>
             </div>
-
+            <?php
+            /*
+              <div class="form-group">
+              <?php echo $form->labelEx($model, 'tanggal_lahir', ['class' => 'col-sm-2 control-label']); ?>
+              <div class="col-sm-10">
+              <?php echo $form->textField($model, 'tanggal_lahir', ['class' => 'form-control']); ?>
+              <?php echo $form->error($model, 'tanggal_lahir', ['class' => 'bg-red']); ?>
+              </div>
+              </div>
+             */
+            ?>
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'tanggal_lahir', ['class' => 'col-sm-2 control-label']); ?>
                 <div class="col-sm-10">
-                    <?php echo $form->textField($model, 'tanggal_lahir', ['class' => 'form-control']); ?>
-                    <?php echo $form->error($model, 'tanggal_lahir', ['class' => 'bg-red']); ?>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <!--<input class="form-control pull-right" id="datepicker" type="text">-->
+                        <?php echo $form->textField($model, 'tanggal_lahir', ['class' => 'form-control']); ?>
+                        <?php echo $form->error($model, 'tanggal_lahir', ['class' => 'bg-red']); ?>
+                    </div>
                 </div>
             </div>
 
@@ -98,8 +116,6 @@ $form = $this->beginWidget('CActiveForm', [
         </div>
     </div>
 
-
-
 </div>
 <div class="box-footer">
     <?php echo CHtml::submitButton($model->isNewRecord ? 'Tambah' : 'Simpan', ['class' => 'btn btn-info pull-right']); ?>
@@ -107,3 +123,10 @@ $form = $this->beginWidget('CActiveForm', [
 
 <?php
 $this->endWidget();
+?>
+<script>
+    $('#Pegawai_tanggal_lahir').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+</script>
