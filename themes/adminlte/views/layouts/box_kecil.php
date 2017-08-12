@@ -1,7 +1,7 @@
 <?php /* @var $this Controller */ ?>
 <?php $this->beginContent('//layouts/main'); ?>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
         <div class="box <?= $this->box['type'] ?>">
             <div class="box-header <?= $this->box['headerBorder'] ? 'with-border' : '' ?>">
                 <h3 class="box-title"><?= $this->pageHeader['boxTitle'] ?></h3>
@@ -15,7 +15,18 @@
                     ?>
                 </div>
             </div>
-            <?= $content; ?>
+            <div class="box-body">
+                <?= $content; ?>
+            </div>
+            <?php
+            if (!empty($this->footer)):
+                ?>
+                <div class="box-footer">
+                    <?= $this->footer; ?>
+                </div>
+                <?php
+            endif;
+            ?>
         </div>
     </div>
 </div>

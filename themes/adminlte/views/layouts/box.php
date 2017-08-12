@@ -7,11 +7,11 @@
                 <h3 class="box-title"><?= $this->pageHeader['boxTitle'] ?></h3>
                 <div class="box-tools">
                     <?php
-                    $this->widget('BTombolBox', array(
+                    $this->widget('BTombolBox', [
                         'encodeLabel' => false,
                         'id' => '',
                         'items' => $this->menu,
-                    ));
+                    ]);
                     ?>
                 </div>
             </div>

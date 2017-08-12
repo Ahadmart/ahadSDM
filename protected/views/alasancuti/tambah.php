@@ -1,10 +1,11 @@
 <?php
+
 /* @var $this AlasancutiController */
 /* @var $model AlasanCuti */
 
-$this->breadcrumbs=[
-	'Alasan Cuti'=>['index'],
-	'Tambah',
+$this->breadcrumbs = [
+    'Alasan Cuti' => ['index'],
+    'Tambah',
 ];
 
 $this->pageHeader['title'] = 'Tambah';
@@ -13,7 +14,7 @@ $this->pageHeader['boxTitle'] = 'Input';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
 
-$this->renderPartial('_form', ['model'=>$model]);
+$this->renderPartial('_form', ['model' => $model]);
 
 $this->menu = [
     [

@@ -2,9 +2,9 @@
 /* @var $this AlasancutiController */
 /* @var $model AlasanCuti */
 
-$this->breadcrumbs=[
-	'Alasan Cuti'=>['index'],
-	'Index',
+$this->breadcrumbs = [
+    'Alasan Cuti' => ['index'],
+    'Index',
 ];
 
 $this->pageHeader['title'] = 'Alasan Cuti';
@@ -12,7 +12,6 @@ $this->pageHeader['desc'] = 'Daftar Alasan Cuti';
 $this->pageHeader['boxTitle'] = 'Index';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
-
 ?>
 <div class="dataTables_wrapper form-inline dt-bootstrap">
     <div class="row">
@@ -21,38 +20,25 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
     </div>
     <div class="row" style="overflow: auto">
         <div class="col-sm-12">
-<?php
-
-$this->widget('BGridView', [
-	'id'=>'alasan-cuti-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-        'htmlOptions' => ['style' => 'width: 100%'],
-	'columns'=>[
-		[
-'class' => 'BDataColumn',
-'name' => 'id'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'nama'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'updated_at'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'updated_by'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'created_at'
-],
-		['class'=>'BButtonColumn']
+            <?php
+            $this->widget('BGridView', [
+                'id' => 'alasan-cuti-grid',
+                'dataProvider' => $model->search(),
+                'filter' => $model,
+                'htmlOptions' => ['style' => 'width: 100%'],
+                'columns' => [
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'nama',
+                        'header' => '<span class="ak">N</span>ama',
+                        'accesskey' => 'n',
+                        'type' => 'raw',
+                        'value' => [$this, 'renderLinkToView']
+                    ],
+                    ['class' => 'BButtonColumn']
                 ]
-]);
- ?>
+            ]);
+            ?>
         </div>
     </div>
 </div>

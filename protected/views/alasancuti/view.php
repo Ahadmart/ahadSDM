@@ -2,30 +2,27 @@
 /* @var $this AlasancutiController */
 /* @var $model AlasanCuti */
 
-$this->breadcrumbs=[
-	'Alasan Cuti'=>['index'],
-	$model->nama,
+$this->breadcrumbs = [
+    'Alasan Cuti' => ['index'],
+    $model->nama,
 ];
 
 $this->pageHeader['title'] = 'View';
 $this->pageHeader['desc'] = 'Alasan Cuti';
-$this->pageHeader['boxTitle'] = 'Alasan Cuti: '. $model->nama;
+$this->pageHeader['boxTitle'] = 'Alasan Cuti: ' . $model->nama;
 
-$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'].' '.$model->nama;
-
+$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->nama;
 ?>
 <div class="row">
     <div class="col-sm-12">
-<?php $this->widget('BDetailView', [
-	'data'=>$model,
-	'attributes'=>[
-		'id',
-		'nama',
-		'updated_at',
-		'updated_by',
-		'created_at',
-	],
-]); ?>
+        <?php
+        $this->widget('BDetailView', [
+            'data' => $model,
+            'attributes' => [
+                'nama',
+            ],
+        ]);
+        ?>
     </div>
 </div>
 <?php
