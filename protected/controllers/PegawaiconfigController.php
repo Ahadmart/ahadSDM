@@ -127,7 +127,7 @@ class PegawaiconfigController extends Controller
         if (isset($data->pegawai)) {
             $return = '<a href="' .
                     $this->createUrl('view', ['id' => $data->id]) . '">' .
-                    $data->pegawai->nama . '</a>';
+                    $data->pegawai->nama . ' / ' . $data->pegawai->nip . '</a>';
         }
         return $return;
     }

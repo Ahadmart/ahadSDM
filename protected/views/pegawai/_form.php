@@ -26,7 +26,7 @@ $form = $this->beginWidget('CActiveForm', [
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'nip', ['class' => 'col-sm-2 control-label']); ?>
                 <div class="col-sm-10">
-                    <?php echo $form->textField($model, 'nip', ['class' => 'form-control', 'size' => 50, 'maxlength' => 50]); ?>
+                    <?php echo $form->textField($model, 'nip', ['class' => 'form-control', 'size' => 50, 'maxlength' => 50, 'autofocus' => 'autofocus']); ?>
                     <?php echo $form->error($model, 'nip', ['class' => 'bg-red']); ?>
                 </div>
             </div>
@@ -46,17 +46,7 @@ $form = $this->beginWidget('CActiveForm', [
                     <?php echo $form->error($model, 'alamat', ['class' => 'bg-red']); ?>
                 </div>
             </div>
-            <?php
-            /*
-              <div class="form-group">
-              <?php echo $form->labelEx($model, 'tanggal_lahir', ['class' => 'col-sm-2 control-label']); ?>
-              <div class="col-sm-10">
-              <?php echo $form->textField($model, 'tanggal_lahir', ['class' => 'form-control']); ?>
-              <?php echo $form->error($model, 'tanggal_lahir', ['class' => 'bg-red']); ?>
-              </div>
-              </div>
-             */
-            ?>
+
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'tanggal_lahir', ['class' => 'col-sm-2 control-label']); ?>
                 <div class="col-sm-10">
@@ -64,7 +54,6 @@ $form = $this->beginWidget('CActiveForm', [
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <!--<input class="form-control pull-right" id="datepicker" type="text">-->
                         <?php echo $form->textField($model, 'tanggal_lahir', ['class' => 'form-control']); ?>
                         <?php echo $form->error($model, 'tanggal_lahir', ['class' => 'bg-red']); ?>
                     </div>

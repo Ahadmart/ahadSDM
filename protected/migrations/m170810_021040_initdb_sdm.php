@@ -108,7 +108,7 @@ class m170810_021040_initdb_sdm extends CDbMigration
             `cuti` decimal(4,2) NOT NULL COMMENT 'Bisa pecahan, misal 0.5 (hari)',
             `mulai_cuti` date NOT NULL,
             `alasan_cuti_id` int(10) unsigned NOT NULL,
-            `keterangan` varchar(250) NOT NULL,
+            `keterangan` varchar(250) DEFAULT NULL,
             `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             `updated_by` int(10) unsigned NOT NULL,
             `created_at` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',

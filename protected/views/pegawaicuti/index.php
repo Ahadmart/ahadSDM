@@ -2,9 +2,9 @@
 /* @var $this PegawaicutiController */
 /* @var $model PegawaiCuti */
 
-$this->breadcrumbs=[
-	'Pegawai Cuti'=>['index'],
-	'Index',
+$this->breadcrumbs = [
+    'Pegawai Cuti' => ['index'],
+    'Index',
 ];
 
 $this->pageHeader['title'] = 'Pegawai Cuti';
@@ -12,7 +12,6 @@ $this->pageHeader['desc'] = 'Daftar Pegawai Cuti';
 $this->pageHeader['boxTitle'] = 'Index';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
-
 ?>
 <div class="dataTables_wrapper form-inline dt-bootstrap">
     <div class="row">
@@ -21,60 +20,55 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
     </div>
     <div class="row" style="overflow: auto">
         <div class="col-sm-12">
-<?php
+            <?php
+            /* /* Agar focus tetap di input cari nama/nip setelah pencarian */
+            Yii::app()->clientScript->registerScript('autoFocus', ''
+                    . '$( document ).ajaxComplete(function() {'
+                    . '$("input[name=\'PegawaiCuti[namaNipPegawai]\'").select();'
+                    . '});');
 
-$this->widget('BGridView', [
-	'id'=>'pegawai-cuti-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-        'htmlOptions' => ['style' => 'width: 100%'],
-	'columns'=>[
-		[
-'class' => 'BDataColumn',
-'name' => 'id'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'pegawai_id'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'nama'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'cuti'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'mulai_cuti'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'alasan_cuti_id'
-],
-		/*
-		[
-'class' => 'BDataColumn',
-'name' => 'keterangan'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'updated_at'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'updated_by'
-],
-		[
-'class' => 'BDataColumn',
-'name' => 'created_at'
-],
-		*/
-		['class'=>'BButtonColumn']
+            $this->widget('BGridView', [
+                'id' => 'pegawai-cuti-grid',
+                'dataProvider' => $model->search(),
+                'filter' => $model,
+                'htmlOptions' => ['style' => 'width: 100%'],
+                'columns' => [
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'namaNipPegawai',
+                        'header' => '<span class="ak">N</span>ama / NIP',
+                        'accesskey' => 'n',
+                        'type' => 'raw',
+                        'value' => [$this, 'renderLinkToView'],
+                        'autoFocus' => true
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'keteranganPegawai',
+                        'value' => '$data->getKeteranganPegawai()'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'cuti'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'mulai_cuti'
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'alasan_cuti_id',
+                        'value' => '$data->alasanCuti->nama',
+                        'filter' => AlasanCuti::getList()
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'keterangan'
+                    ],
+                    ['class' => 'BButtonColumn']
                 ]
-]);
- ?>
+            ]);
+            ?>
         </div>
     </div>
 </div>

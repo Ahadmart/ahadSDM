@@ -173,9 +173,9 @@ class Pegawai extends CActiveRecord
 
     public static function getListPanjang()
     {
-        $model = self::model()->with(['cabang', 'bagian', 'jabatan'])->findAll(['select' => 't.id, t.nama, cabang.nama as namaCabang, bagian.nama as namaBagian, jabatan.nama as namaJabatan', 'order' => 't.nama']);
+        $model = self::model()->with(['cabang', 'bagian', 'jabatan'])->findAll(['select' => 't.id, t.nip, t.nama, cabang.nama as namaCabang, bagian.nama as namaBagian, jabatan.nama as namaJabatan', 'order' => 't.nama, t.nip']);
         return CHtml::listData($model, 'id', function($model) {
-                    return $model->nama . ' [ ' . $model->namaCabang . ' | ' . $model->namaBagian . ' | ' . $model->namaJabatan . ' ]';
+                    return $model->nama . ' [' . $model->nip . ']' . ' [' . $model->namaCabang . '] [' . $model->namaBagian . '] [' . $model->namaJabatan . ']';
                 });
     }
 

@@ -24,6 +24,10 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . 
                     'name' => 'pegawai.nama'
                 ],
                 [
+                    'label' => 'NIP',
+                    'name' => 'pegawai.nip'
+                ],
+                [
                     'label' => 'Cabang',
                     'name' => 'pegawai.cabang.nama'
                 ],

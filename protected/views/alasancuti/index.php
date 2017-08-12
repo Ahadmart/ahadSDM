@@ -33,7 +33,8 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                         'header' => '<span class="ak">N</span>ama',
                         'accesskey' => 'n',
                         'type' => 'raw',
-                        'value' => [$this, 'renderLinkToView']
+                        'value' => [$this, 'renderLinkToView'],
+                        'autoFocus' => true
                     ],
                     ['class' => 'BButtonColumn']
                 ]

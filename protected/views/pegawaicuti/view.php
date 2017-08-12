@@ -19,16 +19,30 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'].' '.$mod
 <?php $this->widget('BDetailView', [
 	'data'=>$model,
 	'attributes'=>[
-		'id',
-		'pegawai_id',
 		'nama',
+                [
+                    'label' => 'NIP',
+                    'name' => 'pegawai.nip'
+                ],
+                [
+                    'label' => 'Cabang',
+                    'name' => 'pegawai.cabang.nama'
+                ],
+                [
+                    'label' => 'Bagian',
+                    'name' => 'pegawai.bagian.nama'
+                ],
+                [
+                    'label' => 'Jabatan',
+                    'name' => 'pegawai.jabatan.nama'
+                ],
 		'cuti',
 		'mulai_cuti',
-		'alasan_cuti_id',
+                [
+                    'label' => 'Alasan Cuti',
+                    'name' => 'alasanCuti.nama'
+                ],
 		'keterangan',
-		'updated_at',
-		'updated_by',
-		'created_at',
 	],
 ]); ?>
     </div>

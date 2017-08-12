@@ -23,7 +23,7 @@ class PegawaiConfig extends CActiveRecord
     const BPJS_TIDAK_ADA = 0;
     const BPJS_ADA = 1;
 
-    public $namaPegawai;
+    public $namaNipPegawai;
     public $keteranganPegawai;
 
     /**
@@ -50,7 +50,7 @@ class PegawaiConfig extends CActiveRecord
             ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            ['id, pegawai_id, cuti_tahunan, bpjs, tunjangan_anak, updated_at, updated_by, created_at, namaPegawai, keteranganPegawai', 'safe', 'on' => 'search'],
+            ['id, pegawai_id, cuti_tahunan, bpjs, tunjangan_anak, updated_at, updated_by, created_at, namaNipPegawai, keteranganPegawai', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -81,7 +81,7 @@ class PegawaiConfig extends CActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
-            'namaPegawai' => 'Nama',
+            'namaNipPegawai' => 'Nama/NIP',
             'keteranganPegawai' => 'Unit Kerja'
         ];
     }
@@ -113,15 +113,14 @@ class PegawaiConfig extends CActiveRecord
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->with = ['pegawai', 'pegawai.cabang', 'pegawai.bagian', 'pegawai.jabatan'];
-        $criteria->compare('pegawai.nama', $this->namaPegawai, true);
+        $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
         $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
-
 
         $sort = [
             'attributes' => [
-                'namaPegawai' => [
-                    'asc' => 'pegawai.nama',
-                    'desc' => 'pegawai.nama desc'
+                'namaNipPegawai' => [
+                    'asc' => 'CONCAT(pegawai.nama,pegawai.nip)',
+                    'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
                 ],
                 'keteranganPegawai' => [
                     'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
@@ -170,6 +169,11 @@ class PegawaiConfig extends CActiveRecord
     public function getNamaBpjs()
     {
         return $this->listBpjs()[$this->bpjs];
+    }
+
+    public function getNamaNipPegawai()
+    {
+        return $this->pegawai->nama . ' / ' . $this->pegawai->nip;
     }
 
     public function getKeteranganPegawai()
