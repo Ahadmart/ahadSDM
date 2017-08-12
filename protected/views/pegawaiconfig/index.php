@@ -27,22 +27,18 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                 'filter' => $model,
                 'htmlOptions' => ['style' => 'width: 100%'],
                 'columns' => [
-                    array(
+                    [
                         'class' => 'BDataColumn',
                         'name' => 'namaPegawai',
                         'header' => '<span class="ak">N</span>ama',
                         'accesskey' => 'n',
                         'type' => 'raw',
-                        'value' => array($this, 'renderLinkToView'),
-                    ),
+                        'value' => [$this, 'renderLinkToView'],
+                    ],
                     [
                         'class' => 'BDataColumn',
                         'name' => 'keteranganPegawai',
                         'value' => '$data->getKeteranganPegawai()'
-                    ],
-                    [
-                        'class' => 'BDataColumn',
-                        'name' => 'cuti_tahunan'
                     ],
                     [
                         'class' => 'BDataColumn',
@@ -52,7 +48,15 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'tunjangan_anak'
+                        'name' => 'cuti_tahunan',
+                        'htmlOptions' => ['class' => 'text-right'],
+                        'headerHtmlOptions' => ['class' => 'text-right']
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'tunjangan_anak',
+                        'htmlOptions' => ['class' => 'text-right'],
+                        'headerHtmlOptions' => ['class' => 'text-right']
                     ],
                     ['class' => 'BButtonColumn']
                 ]

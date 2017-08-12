@@ -1,49 +1,36 @@
 <?php
-/* @var $this PegawaiconfigController */
-/* @var $model PegawaiConfig */
+/* @var $this PegawaicutiController */
+/* @var $model PegawaiCuti */
 
-$this->breadcrumbs = [
-    'Pegawai Config' => ['index'],
-    $model->pegawai->nama,
+$this->breadcrumbs=[
+	'Pegawai Cuti'=>['index'],
+	$model->nama,
 ];
 
 $this->pageHeader['title'] = 'View';
-$this->pageHeader['desc'] = 'Pegawai Config';
-$this->pageHeader['boxTitle'] = 'Pegawai Config: ' . $model->pegawai->nama;
+$this->pageHeader['desc'] = 'Pegawai Cuti';
+$this->pageHeader['boxTitle'] = 'Pegawai Cuti: '. $model->nama;
 
-$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->pegawai->nama;
+$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'].' '.$model->nama;
+
 ?>
 <div class="row">
     <div class="col-sm-12">
-        <?php
-        $this->widget('BDetailView', [
-            'data' => $model,
-            'attributes' => [
-                [
-                    'label' => 'Nama',
-                    'name' => 'pegawai.nama'
-                ],
-                [
-                    'label' => 'Cabang',
-                    'name' => 'pegawai.cabang.nama'
-                ],
-                [
-                    'label' => 'Bagian',
-                    'name' => 'pegawai.bagian.nama'
-                ],
-                [
-                    'label' => 'Jabatan',
-                    'name' => 'pegawai.jabatan.nama'
-                ],
-                'cuti_tahunan',
-                [
-                    'label' => 'BPJS',
-                    'name' => 'namaBpjs'
-                ],
-                'tunjangan_anak',
-            ],
-        ]);
-        ?>
+<?php $this->widget('BDetailView', [
+	'data'=>$model,
+	'attributes'=>[
+		'id',
+		'pegawai_id',
+		'nama',
+		'cuti',
+		'mulai_cuti',
+		'alasan_cuti_id',
+		'keterangan',
+		'updated_at',
+		'updated_by',
+		'created_at',
+	],
+]); ?>
     </div>
 </div>
 <?php

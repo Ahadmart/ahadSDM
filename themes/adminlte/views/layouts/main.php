@@ -164,6 +164,16 @@
                             'id' => '',
                             'items' => [
                                 [
+                                    'label' => '<i class="fa fa-hashtag fa-fw"></i><span>' . 'Input</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>',
+                                    'url' => '',
+                                    'itemOptions' => ['class' => 'treeview'],
+                                    'submenuOptions' => ['class' => 'treeview-menu'],
+                                    'items' => [
+                                        ['label' => '<i class="fa fa-calendar-minus-o fa-fw"></i><span>' . ' Cuti</span>', 'url' => ['/pegawaicuti/index']],
+//                                        ['label' => '<i class="fa fa-shield fa-fw"></i><span>' . ' Otorisasi Item</span>', 'url' => ['/auth/item/index']],
+                                    ],
+                                ],
+                                [
                                     'label' => '<i class="fa fa-database fa-fw"></i><span>' . 'Master Data</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>',
                                     'url' => '',
                                     'itemOptions' => ['class' => 'treeview'],
@@ -174,6 +184,7 @@
                                         ['label' => '<i class="fa fa-user-secret fa-fw"></i><span>' . ' Jabatan</span>', 'url' => ['/jabatan/index']],
                                         ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' Pegawai</span>', 'url' => ['/pegawai/index']],
                                         ['label' => '<i class="fa fa-user-o fa-fw"></i><span>' . ' Pegawai (Config)</span>', 'url' => ['/pegawaiconfig/index']],
+                                        ['label' => '<i class="fa fa-calendar-check-o fa-fw"></i><span>' . ' Alasan Cuti</span>', 'url' => ['/alasancuti/index']],
                                     ],
                                 ],
                                 [

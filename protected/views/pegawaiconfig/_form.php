@@ -29,18 +29,18 @@ $form = $this->beginWidget('CActiveForm', [
     </div>
 
     <div class="form-group">
-        <?php echo $form->labelEx($model, 'cuti_tahunan', ['class' => 'col-sm-2 control-label']); ?>
-        <div class="col-sm-10">
-            <?php echo $form->textField($model, 'cuti_tahunan', ['class' => 'form-control', 'size' => 4, 'maxlength' => 4]); ?>
-            <?php echo $form->error($model, 'cuti_tahunan', ['class' => 'bg-red']); ?>
-        </div>
-    </div>
-
-    <div class="form-group">
         <?php echo $form->labelEx($model, 'bpjs', ['class' => 'col-sm-2 control-label']); ?>
         <div class="col-sm-10">
             <?php echo $form->dropDownList($model, 'bpjs', PegawaiConfig::listBpjs(), ['class' => 'form-control']); ?>
             <?php echo $form->error($model, 'bpjs', ['class' => 'bg-red']); ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <?php echo $form->labelEx($model, 'cuti_tahunan', ['class' => 'col-sm-2 control-label']); ?>
+        <div class="col-sm-10">
+            <?php echo $form->textField($model, 'cuti_tahunan', ['class' => 'form-control', 'size' => 4, 'maxlength' => 4]); ?>
+            <?php echo $form->error($model, 'cuti_tahunan', ['class' => 'bg-red']); ?>
         </div>
     </div>
 

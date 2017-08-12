@@ -75,7 +75,7 @@ class PegawaiConfig extends CActiveRecord
         return [
             'id' => 'ID',
             'pegawai_id' => 'Pegawai',
-            'cuti_tahunan' => 'Cuti Tahunan',
+            'cuti_tahunan' => 'Cuti Tahunan (Hari)',
             'bpjs' => 'BPJS',
             'tunjangan_anak' => 'Tunjangan Anak',
             'updated_at' => 'Updated At',
@@ -114,7 +114,7 @@ class PegawaiConfig extends CActiveRecord
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->with = ['pegawai', 'pegawai.cabang', 'pegawai.bagian', 'pegawai.jabatan'];
         $criteria->compare('pegawai.nama', $this->namaPegawai, true);
-        $criteria->compare("CONCAT(pegawai.cabang.nama,pegawai.bagian.nama,pegawai.jabatan.nama", $this->keteranganPegawai, true);
+        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
 
 
         $sort = [
@@ -122,6 +122,10 @@ class PegawaiConfig extends CActiveRecord
                 'namaPegawai' => [
                     'asc' => 'pegawai.nama',
                     'desc' => 'pegawai.nama desc'
+                ],
+                'keteranganPegawai' => [
+                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
+                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
                 ],
                 '*'
             ]

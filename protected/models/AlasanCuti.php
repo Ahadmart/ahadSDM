@@ -1,33 +1,27 @@
 <?php
 
 /**
- * This is the model class for table "pegawai_cuti".
+ * This is the model class for table "alasan_cuti".
  *
- * The followings are the available columns in table 'pegawai_cuti':
+ * The followings are the available columns in table 'alasan_cuti':
  * @property string $id
- * @property string $pegawai_id
  * @property string $nama
- * @property string $cuti
- * @property string $mulai_cuti
- * @property string $alasan_cuti_id
- * @property string $keterangan
  * @property string $updated_at
  * @property string $updated_by
  * @property string $created_at
  *
  * The followings are the available model relations:
- * @property AlasanCuti $alasanCuti
- * @property Pegawai $pegawai
  * @property User $updatedBy
+ * @property PegawaiCuti[] $pegawaiCutis
  */
-class PegawaiCuti extends CActiveRecord
+class AlasanCuti extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'pegawai_cuti';
+		return 'alasan_cuti';
 	}
 
 	/**
@@ -38,15 +32,13 @@ class PegawaiCuti extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('pegawai_id, nama, cuti, mulai_cuti, alasan_cuti_id, keterangan, updated_at, updated_by', 'required', 'message' => '[{attribute}] harus diisi!'),
-			array('pegawai_id, alasan_cuti_id, updated_by', 'length', 'max'=>10),
+			array('nama, updated_at, updated_by', 'required', 'message' => '[{attribute}] harus diisi!'),
 			array('nama', 'length', 'max'=>50),
-			array('cuti', 'length', 'max'=>4),
-			array('keterangan', 'length', 'max'=>250),
+			array('updated_by', 'length', 'max'=>10),
 			array('created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, pegawai_id, nama, cuti, mulai_cuti, alasan_cuti_id, keterangan, updated_at, updated_by, created_at', 'safe', 'on'=>'search'),
+			array('id, nama, updated_at, updated_by, created_at', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,9 +50,8 @@ class PegawaiCuti extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'alasanCuti' => array(self::BELONGS_TO, 'AlasanCuti', 'alasan_cuti_id'),
-			'pegawai' => array(self::BELONGS_TO, 'Pegawai', 'pegawai_id'),
 			'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
+			'pegawaiCutis' => array(self::HAS_MANY, 'PegawaiCuti', 'alasan_cuti_id'),
 		);
 	}
 
@@ -71,12 +62,7 @@ class PegawaiCuti extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'pegawai_id' => 'Pegawai',
 			'nama' => 'Nama',
-			'cuti' => 'Cuti',
-			'mulai_cuti' => 'Mulai Cuti',
-			'alasan_cuti_id' => 'Alasan Cuti',
-			'keterangan' => 'Keterangan',
 			'updated_at' => 'Updated At',
 			'updated_by' => 'Updated By',
 			'created_at' => 'Created At',
@@ -102,12 +88,7 @@ class PegawaiCuti extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('pegawai_id',$this->pegawai_id,true);
 		$criteria->compare('nama',$this->nama,true);
-		$criteria->compare('cuti',$this->cuti,true);
-		$criteria->compare('mulai_cuti',$this->mulai_cuti,true);
-		$criteria->compare('alasan_cuti_id',$this->alasan_cuti_id,true);
-		$criteria->compare('keterangan',$this->keterangan,true);
 		$criteria->compare('updated_at',$this->updated_at,true);
 		$criteria->compare('updated_by',$this->updated_by,true);
 		$criteria->compare('created_at',$this->created_at,true);
@@ -121,7 +102,7 @@ class PegawaiCuti extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return PegawaiCuti the static model class
+	 * @return AlasanCuti the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
