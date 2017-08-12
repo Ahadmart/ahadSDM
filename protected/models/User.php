@@ -85,6 +85,7 @@ class User extends CActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
+            'newPasswordRepeat' => 'New Password (Repeat)'
         ];
     }
 

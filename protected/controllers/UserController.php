@@ -9,6 +9,7 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        $this->layout = '//layouts/box_medium';
         $this->render('view', [
             'model' => $this->loadModel($id),
         ]);
@@ -20,7 +21,7 @@ class UserController extends Controller
      */
     public function actionTambah()
     {
-        $this->layout = '//layouts/box_form';
+        $this->layout = '//layouts/box_form_medium';
         $model = new User;
 
         // Uncomment the following line if AJAX validation is needed
@@ -45,7 +46,7 @@ class UserController extends Controller
      */
     public function actionUbah($id)
     {
-        $this->layout = '//layouts/box_form';
+        $this->layout = '//layouts/box_form_medium';
         $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed

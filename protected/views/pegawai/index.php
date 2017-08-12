@@ -21,6 +21,12 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
     <div class="row" style="overflow: auto">
         <div class="col-sm-12">
             <?php
+            /*  Agar focus tetap di input cari nama/nip setelah pencarian */
+            Yii::app()->clientScript->registerScript('autoFocus', ''
+                    . '$( document ).ajaxComplete(function() {'
+                    . '$("input[name=\'Pegawai[namaNipPegawai]\'").select();'
+                    . '});');
+
             $this->widget('BGridView', [
                 'id' => 'pegawai-grid',
                 'dataProvider' => $model->search(),
@@ -29,8 +35,8 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                 'columns' => [
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'nama',
-                        'header' => '<span class="ak">N</span>ama',
+                        'name' => 'namaNipPegawai',
+                        'header' => '<span class="ak">N</span>ama / NIP',
                         'accesskey' => 'n',
                         'type' => 'raw',
                         'value' => [$this, 'renderLinkToView'],

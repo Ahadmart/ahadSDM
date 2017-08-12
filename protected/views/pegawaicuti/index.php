@@ -1,6 +1,8 @@
 <?php
 /* @var $this PegawaicutiController */
 /* @var $model PegawaiCuti */
+Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/plugins/pace/pace.min.css');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/bower_components/PACE/pace.min.js', CClientScript::POS_HEAD);
 
 $this->breadcrumbs = [
     'Pegawai Cuti' => ['index'],
@@ -21,7 +23,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
     <div class="row" style="overflow: auto">
         <div class="col-sm-12">
             <?php
-            /* /* Agar focus tetap di input cari nama/nip setelah pencarian */
+            /*  Agar focus tetap di input cari nama/nip setelah pencarian */
             Yii::app()->clientScript->registerScript('autoFocus', ''
                     . '$( document ).ajaxComplete(function() {'
                     . '$("input[name=\'PegawaiCuti[namaNipPegawai]\'").select();'
@@ -72,6 +74,11 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
         </div>
     </div>
 </div>
+<script>
+    $(document).ajaxStart(function () {
+        Pace.restart();
+    });
+</script>
 <?php
 $this->menu = [
     [

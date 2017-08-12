@@ -32,7 +32,7 @@ class Pegawai extends CActiveRecord
     public $namaCabang;
     public $namaBagian;
     public $namaJabatan;
-    public $namaPegawai;
+    public $namaNipPegawai;
 
     /**
      * @return string the associated database table name
@@ -57,7 +57,7 @@ class Pegawai extends CActiveRecord
             ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            ['id, nip, nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon, perusahaan, updated_at, updated_by, created_at, namaPegawai', 'safe', 'on' => 'search'],
+            ['id, nip, nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon, perusahaan, updated_at, updated_by, created_at, namaNipPegawai', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -97,6 +97,7 @@ class Pegawai extends CActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
+            'namaNipPegawai' => 'Nama / NIP'
         ];
     }
 
@@ -131,9 +132,21 @@ class Pegawai extends CActiveRecord
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('CONCAT(nama, nip)', $this->namaNipPegawai, true);
+
+        $sort = [
+            'attributes' => [
+                'namaNipPegawai' => [
+                    'asc' => 'CONCAT(nama, nip)',
+                    'desc' => 'CONCAT(nama, nip) desc'
+                ],
+                '*'
+            ]
+        ];
 
         return new CActiveDataProvider($this, [
             'criteria' => $criteria,
+            'sort' => $sort
         ]);
     }
 
@@ -177,6 +190,11 @@ class Pegawai extends CActiveRecord
         return CHtml::listData($model, 'id', function($model) {
                     return $model->nama . ' [' . $model->nip . ']' . ' [' . $model->namaCabang . '] [' . $model->namaBagian . '] [' . $model->namaJabatan . ']';
                 });
+    }
+
+    public function getNamaNipPegawai()
+    {
+        return $this->pegawai->nama . ' / ' . $this->pegawai->nip;
     }
 
 }
