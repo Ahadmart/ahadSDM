@@ -76,8 +76,8 @@ class m170810_021040_initdb_sdm extends CDbMigration
         $this->createTable('pegawai_config', [
             "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `pegawai_id` int(10) unsigned NOT NULL,
-              `cuti_tahunan` decimal(4,2) NOT NULL DEFAULT '0.00' COMMENT 'Bisa pecahan, misal 0.5 hari',
               `bpjs` tinyint(1) NOT NULL DEFAULT '1',
+              `cuti_tahunan` decimal(4,2) NOT NULL DEFAULT '0.00' COMMENT 'Bisa pecahan, misal 0.5 hari',
               `tunjangan_anak` decimal(18,2) NOT NULL DEFAULT '0.00',
               `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
               `updated_by` int(10) unsigned NOT NULL,
@@ -89,22 +89,36 @@ class m170810_021040_initdb_sdm extends CDbMigration
               CONSTRAINT `fk_pegawai_config_updatedby` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION"
                 ], 'ENGINE=' . $dbEngine . ' DEFAULT CHARSET=utf8');
 
+        $this->createTable('alasan_cuti', [
+            "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `nama` varchar(50) NOT NULL,
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `updated_by` int(10) unsigned NOT NULL,
+            `created_at` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `nama` (`nama`),
+            KEY `fk_alasan_cuti_updatedby_idx` (`updated_by`),
+            CONSTRAINT `fk_alasan_cuti_updatedby` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION"
+                ], 'ENGINE=' . $dbEngine . ' DEFAULT CHARSET=utf8');
+
         $this->createTable('pegawai_cuti', [
             "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-              `pegawai_id` int(10) unsigned NOT NULL,
-              `nama` varchar(50) NOT NULL,
-              `cuti` decimal(4,2) NOT NULL COMMENT 'Bisa pecahan, misal 0.5 (hari)',
-              `mulai_cuti` date NOT NULL,
-              `alasan` varchar(20) NOT NULL,
-              `keterangan` varchar(250) NOT NULL,
-              `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-              `updated_by` int(10) unsigned NOT NULL,
-              `created_at` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
-              PRIMARY KEY (`id`),
-              KEY `fk_cuti_updatedby_idx` (`updated_by`),
-              KEY `fk_cuti_pegawai_idx` (`pegawai_id`),
-              CONSTRAINT `fk_cuti_pegawai` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-              CONSTRAINT `fk_cuti_updatedby` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION"
+            `pegawai_id` int(10) unsigned NOT NULL,
+            `nama` varchar(50) NOT NULL,
+            `cuti` decimal(4,2) NOT NULL COMMENT 'Bisa pecahan, misal 0.5 (hari)',
+            `mulai_cuti` date NOT NULL,
+            `alasan_cuti_id` int(10) unsigned NOT NULL,
+            `keterangan` varchar(250) NOT NULL,
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `updated_by` int(10) unsigned NOT NULL,
+            `created_at` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
+            PRIMARY KEY (`id`),
+            KEY `fk_cuti_updatedby_idx` (`updated_by`),
+            KEY `fk_cuti_pegawai_idx` (`pegawai_id`),
+            KEY `fk_cuti_alasan_idx` (`alasan_cuti_id`),
+            CONSTRAINT `fk_cuti_alasan` FOREIGN KEY (`alasan_cuti_id`) REFERENCES `alasan_cuti` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+            CONSTRAINT `fk_cuti_pegawai` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+            CONSTRAINT `fk_cuti_updatedby` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION"
                 ], 'ENGINE=' . $dbEngine . ' DEFAULT CHARSET=utf8');
     }
 
