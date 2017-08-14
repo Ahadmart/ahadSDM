@@ -24,7 +24,6 @@ cd ahadsdm
 git clone https://github.com/abumuhammad/as1.git ./
 
 # KONFIGURASI GIT UNTUK MENGABAIKAN FILE YANG BERUBAH HANYA LOKAL
-git update-index --assume-unchanged framework/
 git update-index --assume-unchanged protected/config/database.php
 
 # GANTI KONFIGURASI DATABASE, SESUAIKAN DB, USER, PASSWORD di 2 FILE BERIKUT
