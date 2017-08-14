@@ -1,0 +1,56 @@
+# PANDUAN INSTALL UNTUK DEBIAN 8.6
+
+# INSTALL APACHE PHP DAN MYSQL!
+# ....
+
+
+# SETELAH INSTALL INSTALL/ENABLE MODUL REWRITE
+# ENABLE REWRITE UNTUK FILE .htaccess ,DGN MENGGANTI "AllowOverride None" JADI "AllowOverride All"
+# (UNTUK DIRECTORY /var/www/)
+awk '/AllowOverride None/{c+=1}{if(c==3){sub("AllowOverride None","AllowOverride All",$0)};print}' /etc/apache2/apache2.conf > /tmp/nih
+cp /tmp/nih /etc/apache2/apache2.conf
+# ENABLE MODUL REWRITE, RESTART APACHE
+a2enmod rewrite ; service apache2 restart
+
+# INSTALL BOWER (AKAN DIGUNAKAN UNTUK FRONT END)
+# Install node.js/npm
+apt-get install build-essential npm nodejs-legacy
+npm install -g bower
+
+## INSTALL AHADSDM
+cd /var/www/html
+mkdir ahadsdm
+cd ahadsdm
+git clone https://github.com/abumuhammad/as1.git ./
+
+# KONFIGURASI GIT UNTUK MENGABAIKAN FILE YANG BERUBAH HANYA LOKAL
+git update-index --assume-unchanged framework/
+git update-index --assume-unchanged protected/config/database.php
+
+# GANTI KONFIGURASI DATABASE, SESUAIKAN DB, USER, PASSWORD di 2 FILE BERIKUT
+nano protected/config/database.php
+nano fresh-install.sh
+
+# GANTI PERMISI AGAR BISA DITULIS OLEH WEB SERVER
+chmod o+w assets/ protected/runtime/
+
+# DOWNLOAD FRAMEWORK (YII 1.1.19)
+wget https://github.com/yiisoft/yii/releases/download/1.1.19/yii-1.1.19.5790cb.tar.gz
+#EXTRACT FRAMEWORK (YII 1.1.19) dan PINDAHKAN
+tar -xzf yii-1.1.19.5790cb.tar.gz
+
+# PINDAHKAN DIRECTORY FRAMEWORK, JIKA BEDA, SESUAIKAN index.php, protected/yiic.php
+mv yii-1.1.19.5790cb/framework ../
+
+# HAPUS YANG TIDAK PERLU
+rm -rf yii-1.1.19.*
+
+# JALANKAN INSTALASI
+./fresh-install.sh
+
+# LENGKAPI FRONTEND (ADMINLTE)
+cd themes/adminlte/
+# INSTAL DEPENDENSI (JIKA ROOT GUNAKAN PARAM --allow-root)
+bower --allow-root install
+
+
