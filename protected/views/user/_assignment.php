@@ -2,9 +2,9 @@
     <select class="form-control" id="select-item">
         <?php
         // render _authitem_opt ;
-        $this->renderPartial('../authitem/_authitem_opt', array(
+        $this->renderPartial('../authitem/_authitem_opt', [
             'authItem' => $authItem
-        ));
+        ]);
         ?>
     </select>
     <span class="input-group-btn">
@@ -20,7 +20,7 @@
         $.fn.yiiGridView.update('auth-assigned-grid', {
             type: 'POST',
             data: dataString,
-            url: "<?php echo $this->createUrl('assign', array('userid' => $user->id)); ?>",
+            url: "<?php echo $this->createUrl('assign', ['userid' => $user->id]); ?>",
             success: function () {
                 $.fn.yiiGridView.update('auth-assigned-grid');
                 updateItemOpt();
@@ -29,6 +29,6 @@
         return false;
     });
     function updateItemOpt() {
-        $("#select-item").load("<?php echo $this->createUrl('listauthitem', array('userid' => $user->id)); ?>");
+        $("#select-item").load("<?php echo $this->createUrl('listauthitem', ['userid' => $user->id]); ?>");
     }
 </script>

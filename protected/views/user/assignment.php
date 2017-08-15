@@ -18,15 +18,16 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
 ?>
 
 <?php
-$this->renderPartial('_assignment', array(
+
+$this->renderPartial('_assignment', [
     'user' => $user,
     'authItem' => $authItem
-));
+]);
 
-$this->renderPartial('_list_assigned', array(
+$this->renderPartial('_list_assigned', [
     'user' => $user,
     'model' => $model
-));
+]);
 ?>
 
 
