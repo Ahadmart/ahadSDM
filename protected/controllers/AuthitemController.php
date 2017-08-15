@@ -65,7 +65,7 @@ class AuthitemController extends Controller
                     $auth->createRole($authItem['name'], $authItem['description'], $authItem['bizrule']);
                     break;
             }
-            $this->redirect(['ubah', 'id' => $authItem['name']]);
+            $this->redirect(['ubah', 'nama' => $authItem['name']]);
         }
 
         $this->render('tambah', [
@@ -93,7 +93,7 @@ class AuthitemController extends Controller
 
         if (isset($_POST['AuthItem'])) {
             $model->attributes = $_POST['AuthItem'];
-            if ($model->save()){
+            if ($model->save()) {
                 $this->redirect('index');
             }
         }
