@@ -138,7 +138,6 @@
                                     'submenuOptions' => ['class' => 'treeview-menu'],
                                     'items' => [
                                         ['label' => '<i class="fa fa-calendar-minus-o fa-fw"></i><span>' . ' Cuti</span>', 'url' => ['/pegawaicuti/index']],
-//                                        ['label' => '<i class="fa fa-shield fa-fw"></i><span>' . ' Otorisasi Item</span>', 'url' => ['/auth/item/index']],
                                     ],
                                 ],
                                 [
@@ -162,7 +161,7 @@
                                     'submenuOptions' => ['class' => 'treeview-menu'],
                                     'items' => [
                                         ['label' => '<i class="fa fa-user fa-fw"></i><span>' . ' User</span>', 'url' => ['/user/index']],
-//                                        ['label' => '<i class="fa fa-shield fa-fw"></i><span>' . ' Otorisasi Item</span>', 'url' => ['/auth/item/index']],
+                                        ['label' => '<i class="fa fa-shield fa-fw"></i><span>' . ' Auth Item</span>', 'url' => ['/authitem/index']],
                                     ],
                                 ],
 //                                ['label' => '<i class="fa fa-sliders fa-fw"></i><span>' . ' Aplikasi</span>', 'url' => ['/config/index']],
