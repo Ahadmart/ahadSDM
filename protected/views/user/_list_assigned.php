@@ -9,7 +9,7 @@ $this->widget('BGridView', [
         [
             'header' => '',
             'value' => function($data) {
-                return '<span class="label">' . $data->authTypeName . '</span>';
+                return '<span class="label label-default">' . $data->authTypeName . '</span>';
             },
             'type' => 'raw'
         ],
