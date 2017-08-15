@@ -133,4 +133,70 @@ class UserController extends Controller
         return $return;
     }
 
+    public function renderLinkToAssignment($data)
+    {
+        $string = '';
+        $assignedList = AuthAssignment::model()->assignedList($data->id);
+        if (empty($assignedList)) {
+            $string = '<span class="not-set">(not set)</span>';
+        }
+        foreach ($assignedList as $item) {
+            $string .= '<span class="label label-success">' . $item['itemname'] . '</span> <span class="label label-default">' . $item['typename'] . '</span><br />';
+        }
+        foreach ($assignedList as $item) {
+            //$string .= ' ' . $item['itemname'];
+        }
+        return CHtml::link($string, $this->createUrl('assignment', ['userid' => $data->id]));
+    }
+
+    public function actionAssignment($userid)
+    {
+        $this->layout = '//layouts/box_medium';
+        $model = new AuthAssignment('search');
+        $model->unsetAttributes();
+        $model->setAttribute('userid', '=' . $userid);
+
+        $user = User::model()->findByPk($userid);
+
+        $this->render('assignment', array(
+            'user' => $user,
+            'model' => $model,
+            'authItem' => AuthItem::model()->listNotAssignedItem($userid)
+        ));
+    }
+
+    /*
+     * Assign an item to userId
+     */
+
+    public function actionAssign($userid)
+    {
+        if (isset($_GET['ajax']) && $_GET['ajax'] === 'auth-assigned-grid' && isset($_POST['item'])) {
+            $item = $_POST['item'];
+            $auth = Yii::app()->authManager;
+            $auth->assign($item, $userid);
+            echo 'Assign Item Status: OK';
+        }
+    }
+
+    /*
+     * Revoke an Item
+     */
+
+    public function actionRevoke($userid, $item)
+    {
+        if (isset($_GET['ajax']) && $_GET['ajax'] === 'auth-assigned-grid') {
+            $auth = Yii::app()->authManager;
+            $auth->revoke($item, $userid);
+            echo 'Remove Item Status: OK';
+        }
+    }
+
+    public function actionListAuthItem($userid)
+    {
+        $this->renderPartial('../authitem/_authitem_opt', array(
+            'authItem' => AuthItem::model()->listNotAssignedItem($userid)
+        ));
+    }
+
 }

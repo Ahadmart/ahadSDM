@@ -43,6 +43,12 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     [
                         'class' => 'BButtonColumn',
                     ],
+                    [
+                        'class' => 'BDataColumn',
+                        'header' => 'Role',
+                        'value' => [$this, 'renderLinkToAssignment'],
+                        'type' => 'raw',
+                    ],
                 ],
             ]);
             ?>
