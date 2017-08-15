@@ -4,44 +4,8 @@ class AuthitemController extends Controller
 {
 
     /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return [
-            'accessControl', // perform access control for CRUD operations
-            'postOnly + delete', // we only allow deletion via POST request
-        ];
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return [
-            ['deny', // deny guest
-                'users' => ['guest'],
-            ],
-        ];
-    }
-
-    /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function actionView($id)
-    {
-        $this->render('view', [
-            'model' => $this->loadModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'ubah' page.
      */
     public function actionTambah()
     {
@@ -75,8 +39,8 @@ class AuthitemController extends Controller
 
     /**
      * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
+     * If update is successful, the browser will be redirected to the 'index' page.
+     * @param text $nama the ID of the model to be updated
      */
     public function actionUbah($nama)
     {
@@ -123,8 +87,8 @@ class AuthitemController extends Controller
 
     /**
      * Deletes a particular model.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param string $nama the ID of the model to be deleted
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param text $nama the ID of the model to be deleted
      */
     public function actionHapus($nama)
     {
@@ -153,7 +117,7 @@ class AuthitemController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
+     * @param text $id the ID of the model to be loaded
      * @return AuthItem the loaded model
      * @throws CHttpException
      */
