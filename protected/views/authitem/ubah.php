@@ -9,7 +9,6 @@ $this->breadcrumbs = [
 
 $this->pageHeader['title'] = 'Ubah';
 $this->pageHeader['desc'] = 'Edit Item Otorisasi';
-$this->pageHeader['boxTitle'] = 'Item Otorisasi: ' . $model->name;
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->name;
 ?>

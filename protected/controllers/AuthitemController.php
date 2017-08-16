@@ -9,7 +9,9 @@ class AuthitemController extends Controller
      */
     public function actionTambah()
     {
-        $this->layout = '//layouts/box_form_medium';
+        //$this->layout = '//layouts/box_form_medium';
+        $this->layout = '//layouts/nobox';
+
         $model = new AuthItem;
 
         // Uncomment the following line if AJAX validation is needed
@@ -173,6 +175,38 @@ class AuthitemController extends Controller
         return '<a href="' .
                 $this->createUrl('ubah', ['nama' => $data->name]) . '">' .
                 $data->name . '</a>';
+    }
+
+    public function actionGensim()
+    {
+        $itemTable = AuthItem::model()->tableName();
+        $controllerActions = [];
+        foreach (AuthItem::getControllerActions() as $cm) {
+            foreach ($cm as $item) {
+                $controllerName = $item['name'];
+                foreach ($item['actions'] as $action) {
+                    $controllerAction = strtolower($controllerName . '.' . $action['name']);
+                    $controllerActions[$controllerAction] = [
+                        'nama' => $controllerAction,
+                        'ada' => 0
+                    ];
+                    $sql = "
+                        SELECT name FROM {$itemTable}
+                        WHERE
+                            `type` = 0 and name = :name
+                        ";
+                    $row = Yii::app()->db->createCommand($sql)
+                            ->bindValue(':name', $controllerAction)
+                            ->queryRow();
+                    if ($row) {
+                        $controllerActions[$controllerAction]['ada'] = 1;
+                    }
+                }
+            }
+        }
+
+
+        $this->renderJSON(['sukses' => true, 'actions' => $controllerActions]);
     }
 
 }

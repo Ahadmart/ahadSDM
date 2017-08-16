@@ -190,4 +190,110 @@ class AuthItem extends CActiveRecord
         return $authItem;
     }
 
+    /**
+     * Returns all the controllers and their actions.
+     * @param array $items the controllers and actions.
+     */
+    public static function getControllerActions($items = null)
+    {
+        if ($items === null)
+            $items = AuthItem::model()->getAllControllers();
+
+        foreach ($items['controllers'] as $controllerName => $controller) {
+            $actions = array();
+            $file = fopen($controller['path'], 'r');
+            $lineNumber = 0;
+            while (feof($file) === false) {
+                ++$lineNumber;
+                $line = fgets($file);
+                preg_match('/public[ \t]+function[ \t]+action([A-Z]{1}[a-zA-Z0-9]+)[ \t]*\(/', $line, $matches);
+                if ($matches !== array()) {
+                    $name = $matches[1];
+                    $actions[strtolower($name)] = array(
+                        'name' => $name,
+                        'line' => $lineNumber
+                    );
+                }
+            }
+
+            $items['controllers'][$controllerName]['actions'] = $actions;
+        }
+
+        foreach ($items['modules'] as $moduleName => $module)
+            $items['modules'][$moduleName] = $this->getControllerActions($module);
+
+        return $items;
+    }
+
+    /**
+     * Returns a list of all application controllers.
+     * @return array the controllers.
+     */
+    protected function getAllControllers()
+    {
+        $basePath = Yii::app()->basePath;
+        $items['controllers'] = $this->getControllersInPath($basePath . DIRECTORY_SEPARATOR . 'controllers');
+        $items['modules'] = $this->getControllersInModules($basePath);
+        return $items;
+    }
+
+    /**
+     * Returns all controllers under the specified path.
+     * @param string $path the path.
+     * @return array the controllers.
+     */
+    protected function getControllersInPath($path)
+    {
+        $controllers = array();
+
+        if (file_exists($path) === true) {
+            $controllerDirectory = scandir($path);
+            foreach ($controllerDirectory as $entry) {
+                if ($entry{0} !== '.') {
+                    $entryPath = $path . DIRECTORY_SEPARATOR . $entry;
+                    if (strpos(strtolower($entry), 'controller') !== false) {
+                        $name = substr($entry, 0, -14);
+                        $controllers[strtolower($name)] = array(
+                            'name' => $name,
+                            'file' => $entry,
+                            'path' => $entryPath,
+                        );
+                    }
+
+                    if (is_dir($entryPath) === true)
+                        foreach ($this->getControllersInPath($entryPath) as $controllerName => $controller)
+                            $controllers[$controllerName] = $controller;
+                }
+            }
+        }
+
+        return $controllers;
+    }
+
+    /**
+     * Returns all the controllers under the specified path.
+     * @param string $path the path.
+     * @return array the controllers.
+     */
+    protected function getControllersInModules($path)
+    {
+        $items = array();
+
+        $modulePath = $path . DIRECTORY_SEPARATOR . 'modules';
+        if (file_exists($modulePath) === true) {
+            $moduleDirectory = scandir($modulePath);
+            foreach ($moduleDirectory as $entry) {
+                if (substr($entry, 0, 1) !== '.' && $entry !== 'rights') {
+                    $subModulePath = $modulePath . DIRECTORY_SEPARATOR . $entry;
+                    if (file_exists($subModulePath) === true) {
+                        $items[$entry]['controllers'] = $this->getControllersInPath($subModulePath . DIRECTORY_SEPARATOR . 'controllers');
+                        $items[$entry]['modules'] = $this->getControllersInModules($subModulePath);
+                    }
+                }
+            }
+        }
+
+        return $items;
+    }
+
 }
