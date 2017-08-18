@@ -1,4 +1,12 @@
 <?php
+/* @var $this AuthitemController */
+/* @var $model AuthItem */
+
+$this->breadcrumbs = [
+    'Auth Item' => ['index'],
+    'Tambah',
+];
+
 $this->pageHeader['title'] = 'Tambah';
 $this->pageHeader['desc'] = 'Tambah Item Otorisasi';
 
@@ -68,22 +76,11 @@ $tombolAutoGen = [
             url: '<?= $this->createUrl('gensim'); ?>',
             success: function (data) {
                 if (data.sukses) {
-                    $("#gensim-container").html("<h1>Sukses</h1>");
-                    var sudahAda = 0;
-                    var belumAda = 0;
-                    $("#gensim-container").append(data.message);
-//                    $.each(data.actions, function (index, value) {
-//                        $("#gensim-container").append(value.nama + " - " + value.ada + "<br />");
-//                        if (value.ada) {
-//                            sudahAda++;
-//                        } else {
-//                            belumAda++;
-//                        }
-//                    });
-//                    $("#gensim-container").append('Item yang sudah ada: ' + sudahAda + '<br />');
-//                    $("#gensim-container").append('Item yang belum ada: ' + belumAda + '<br />');
+                    console.log("Ool iz wel")
+                    $("#gensim-container").html(data.message);
+                    $(".tombol-exec").show(500);
                 } else {
-                    $("#gensim-container").html("<h1>Else</h1>");
+                    $("#gensim-container").html("<h1>Sam Ting Wong !</h1>");
                 }
             }
         });

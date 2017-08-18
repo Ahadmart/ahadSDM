@@ -295,5 +295,5 @@ class AuthItem extends CActiveRecord
 
         return $items;
     }
-
+    
 }

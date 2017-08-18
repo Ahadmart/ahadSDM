@@ -177,11 +177,32 @@ class AuthitemController extends Controller
                 $data->name . '</a>';
     }
 
-    public function actionGensim()
+    /**
+     * Mencari nama controller.action yang ada di aplikasi
+     * @return array Daftar Nama controller.action yang ada di aplikasi
+     */
+    private function getAllActionsName()
+    {
+        $names = [];
+        foreach (AuthItem::getControllerActions() as $cm) {
+            foreach ($cm as $item) {
+                $controllerName = $item['name'];
+                foreach ($item['actions'] as $action) {
+                    $controllerAction = strtolower($controllerName . '.' . $action['name']);
+                    $names[] = $controllerAction;
+                }
+            }
+        }
+        return $names;
+    }
+
+    /**
+     * Mencari nama controller.action yang sudah ada di database
+     * @return array Daftar Nama controller.action yang sudah ada di database
+     */
+    private function getAllActionsNameDb()
     {
         $itemTable = AuthItem::model()->tableName();
-        $controllerActions = [];
-        $controllerACtionsName = [];
 
         $sql = "
             SELECT name FROM {$itemTable}
@@ -195,43 +216,66 @@ class AuthitemController extends Controller
         foreach ($actionsDb as $row) {
             $actionsDbArr[] = $row['name'];
         }
+        return $actionsDbArr;
+    }
 
+    /* Menampilkan Item-item yang akan ditambah dan dihapus */
 
-        foreach (AuthItem::getControllerActions() as $cm) {
-            foreach ($cm as $item) {
-                $controllerName = $item['name'];
-                foreach ($item['actions'] as $action) {
-                    $controllerAction = strtolower($controllerName . '.' . $action['name']);
-                    $controllerACtionsName[] = $controllerAction;
-                    /*
-                    $controllerActions[$controllerAction] = [
-                        'nama' => $controllerAction,
-                        'ada' => 0
-                    ];
-                    $sql = "
-                        SELECT name FROM {$itemTable}
-                        WHERE
-                            `type` = 0 and `name` = :nama
-                        ";
-                    $row = Yii::app()->db->createCommand($sql)
-                            ->bindValue(':nama', $controllerAction)
-                            ->queryAll();
-                    if ($row) {
-                        $controllerActions[$controllerAction]['ada'] = 1;
-                    }
-                     * 
-                     */
-                }
-            }
-        }
-        $adaDbTidakController = [];
+    public function actionGensim()
+    {
+        $controllerACtionsName = $this->getAllActionsName();
+        $actionsDbArr = $this->getAllActionsNameDb();
+
         $adaDbTidakController = array_diff($controllerACtionsName, $actionsDbArr);
-        $adaConTidakDb= [];
         $adaConTidakDb = array_diff($actionsDbArr, $controllerACtionsName);
-        // $this->renderJSON(['sukses' => true, 'actions' => $controllerActions]);
-        $this->renderJSON(['sukses' => true, 'message' => '<pre>' . print_r($actionsDbArr, true) . '</pre>' . '<br />' . '<pre>' . print_r($controllerACtionsName, true) . '</pre>' .
-            '<br />' . '<pre>' . print_r($adaDbTidakController, true) . '</pre>'.
-            '<br />' . '<pre>' . print_r($adaConTidakDb, true) . '</pre>']);
+
+        $akanDiTambahkanText = '';
+        foreach ($adaDbTidakController as $item) {
+            $akanDiTambahkanText .= $item . PHP_EOL;
+        }
+
+        $akanDiHapusText = '';
+        foreach ($adaConTidakDb as $item) {
+            $akanDiHapusText .= $item . PHP_EOL;
+        }
+        $this->renderJSON([
+            'sukses' => true,
+            'message' =>
+            count($adaDbTidakController) . ' item akan ditambahkan' .
+            '<br />' . '<pre>' . print_r($akanDiTambahkanText, true) . '</pre>' .
+            count($adaConTidakDb) . ' item akan dihapus' .
+            '<br />' . '<pre>' . print_r($akanDiHapusText, true) . '</pre>']);
+    }
+
+    /* Menambah dan menghapus item (operations) automatically
+       dan redirect ke index
+     */
+
+    public function actionGenExec()
+    {
+        $itemTable = AuthItem::model()->tableName();
+
+        $controllerACtionsName = $this->getAllActionsName();
+        $actionsDbArr = $this->getAllActionsNameDb();
+
+        $adaDbTidakController = array_diff($controllerACtionsName, $actionsDbArr);
+        $adaConTidakDb = array_diff($actionsDbArr, $controllerACtionsName);
+
+        $auth = Yii::app()->authManager;
+
+        foreach ($adaDbTidakController as $nama) {
+            $auth->createOperation($nama);
+        }
+
+        foreach ($adaConTidakDb as $nama) {
+            $sql = "
+                DELETE FROM {$itemTable}
+                WHERE name = :name
+            ";
+
+            Yii::app()->db->createCommand($sql)->bindValue(':name', $nama)->execute();
+        }
+        $this->redirect('index');
     }
 
 }
