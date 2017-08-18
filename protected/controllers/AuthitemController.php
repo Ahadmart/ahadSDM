@@ -181,11 +181,29 @@ class AuthitemController extends Controller
     {
         $itemTable = AuthItem::model()->tableName();
         $controllerActions = [];
+        $controllerACtionsName = [];
+
+        $sql = "
+            SELECT name FROM {$itemTable}
+            WHERE
+                `type` = 0
+            ";
+        $actionsDb = Yii::app()->db->createCommand($sql)
+                ->queryAll();
+
+        $actionsDbArr = [];
+        foreach ($actionsDb as $row) {
+            $actionsDbArr[] = $row['name'];
+        }
+
+
         foreach (AuthItem::getControllerActions() as $cm) {
             foreach ($cm as $item) {
                 $controllerName = $item['name'];
                 foreach ($item['actions'] as $action) {
                     $controllerAction = strtolower($controllerName . '.' . $action['name']);
+                    $controllerACtionsName[] = $controllerAction;
+                    /*
                     $controllerActions[$controllerAction] = [
                         'nama' => $controllerAction,
                         'ada' => 0
@@ -193,20 +211,27 @@ class AuthitemController extends Controller
                     $sql = "
                         SELECT name FROM {$itemTable}
                         WHERE
-                            `type` = 0 and name = :name
+                            `type` = 0 and `name` = :nama
                         ";
                     $row = Yii::app()->db->createCommand($sql)
-                            ->bindValue(':name', $controllerAction)
-                            ->queryRow();
+                            ->bindValue(':nama', $controllerAction)
+                            ->queryAll();
                     if ($row) {
                         $controllerActions[$controllerAction]['ada'] = 1;
                     }
+                     * 
+                     */
                 }
             }
         }
-
-
-        $this->renderJSON(['sukses' => true, 'actions' => $controllerActions]);
+        $adaDbTidakController = [];
+        $adaDbTidakController = array_diff($controllerACtionsName, $actionsDbArr);
+        $adaConTidakDb= [];
+        $adaConTidakDb = array_diff($actionsDbArr, $controllerACtionsName);
+        // $this->renderJSON(['sukses' => true, 'actions' => $controllerActions]);
+        $this->renderJSON(['sukses' => true, 'message' => '<pre>' . print_r($actionsDbArr, true) . '</pre>' . '<br />' . '<pre>' . print_r($controllerACtionsName, true) . '</pre>' .
+            '<br />' . '<pre>' . print_r($adaDbTidakController, true) . '</pre>'.
+            '<br />' . '<pre>' . print_r($adaConTidakDb, true) . '</pre>']);
     }
 
 }

@@ -71,16 +71,17 @@ $tombolAutoGen = [
                     $("#gensim-container").html("<h1>Sukses</h1>");
                     var sudahAda = 0;
                     var belumAda = 0;
-                    $.each(data.actions, function (index, value) {
-                        $("#gensim-container").append(value.nama + " - " + value.ada + "<br />");
-                        if (value.ada) {
-                            sudahAda++;
-                        } else {
-                            belumAda++;
-                        }
-                    });
-                    $("#gensim-container").append('Item yang sudah ada: ' + sudahAda + '<br />');
-                    $("#gensim-container").append('Item yang belum ada: ' + belumAda + '<br />');
+                    $("#gensim-container").append(data.message);
+//                    $.each(data.actions, function (index, value) {
+//                        $("#gensim-container").append(value.nama + " - " + value.ada + "<br />");
+//                        if (value.ada) {
+//                            sudahAda++;
+//                        } else {
+//                            belumAda++;
+//                        }
+//                    });
+//                    $("#gensim-container").append('Item yang sudah ada: ' + sudahAda + '<br />');
+//                    $("#gensim-container").append('Item yang belum ada: ' + belumAda + '<br />');
                 } else {
                     $("#gensim-container").html("<h1>Else</h1>");
                 }
