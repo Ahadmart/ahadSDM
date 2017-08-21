@@ -39,7 +39,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                         'header' => '<span class="ak">N</span>ama / NIP',
                         'accesskey' => 'n',
                         'type' => 'raw',
-                        'value' => [$this, 'renderLinkToView'],
+                        'value' => [$this, 'renderLinkToUbah'],
                         'autoFocus' => true
                     ],
                     [
@@ -57,11 +57,21 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                         'class' => 'BDataColumn',
                         'name' => 'cuti_tahunan',
                         'htmlOptions' => ['class' => 'text-right'],
-                        'headerHtmlOptions' => ['class' => 'text-right']
+                        'headerHtmlOptions' => ['class' => 'text-right'],
+                        'filter' => false
                     ],
                     [
                         'class' => 'BDataColumn',
                         'name' => 'tunjangan_anak',
+                        'value' => 'number_format($data->tunjangan_anak, 2, ",", ".")',
+                        'htmlOptions' => ['class' => 'text-right'],
+                        'headerHtmlOptions' => ['class' => 'text-right'],
+                        'filter' => false
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'header' => 'Gaji',
+                        'value' => '$data->gajiTerakhir',
                         'htmlOptions' => ['class' => 'text-right'],
                         'headerHtmlOptions' => ['class' => 'text-right']
                     ],

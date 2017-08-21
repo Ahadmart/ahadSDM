@@ -45,9 +45,10 @@ class PegawaiconfigController extends Controller
      */
     public function actionUbah($id)
     {
-        $this->layout = '//layouts/box_form';
+        $this->layout = '//layouts/nobox';
 
         $model = $this->loadModel($id);
+        $pegawaiGaji = new PegawaiGaji;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -55,12 +56,18 @@ class PegawaiconfigController extends Controller
         if (isset($_POST['PegawaiConfig'])) {
             $model->attributes = $_POST['PegawaiConfig'];
             if ($model->save()) {
-                $this->redirect(['view', 'id' => $id]);
+                $this->redirect(['index']);
             }
         }
 
+        $gajiGrid = new PegawaiGaji('search');
+        $gajiGrid->unsetAttributes();
+        $gajiGrid->pegawai_id = $id;
+
         $this->render('ubah', [
             'model' => $model,
+            'pegawaiGaji' => $pegawaiGaji,
+            'gajiGrid' => $gajiGrid
         ]);
     }
 
@@ -130,6 +137,32 @@ class PegawaiconfigController extends Controller
                     $data->pegawai->nama . ' / ' . $data->pegawai->nip . '</a>';
         }
         return $return;
+    }
+
+    public function renderLinkToUbah($data)
+    {
+        $return = '';
+        if (isset($data->pegawai)) {
+            $return = '<a href="' .
+                    $this->createUrl('ubah', ['id' => $data->id]) . '">' .
+                    $data->pegawai->nama . ' / ' . $data->pegawai->nip . '</a>';
+        }
+        return $return;
+    }
+
+    public function actionUpdateGaji($id)
+    {
+
+        $model = new PegawaiGaji;
+
+        if (isset($_POST['PegawaiGaji'])) {
+            $model->attributes = $_POST['PegawaiGaji'];
+            $model->pegawai_id = $id;
+            if ($model->save()) {
+                $this->renderJSON(['sukses' => true]);
+            }
+        }
+        $this->renderJSON(['sukses' => false]);
     }
 
 }

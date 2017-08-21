@@ -1,14 +1,13 @@
 <?php
 
 /**
- * This is the model class for table "pegawai_config".
+ * This is the model class for table "pegawai_gaji".
  *
- * The followings are the available columns in table 'pegawai_config':
+ * The followings are the available columns in table 'pegawai_gaji':
  * @property string $id
  * @property string $pegawai_id
- * @property string $cuti_tahunan
- * @property integer $bpjs
- * @property string $tunjangan_anak
+ * @property string $gaji
+ * @property string $per_tanggal
  * @property string $updated_at
  * @property string $updated_by
  * @property string $created_at
@@ -17,21 +16,15 @@
  * @property Pegawai $pegawai
  * @property User $updatedBy
  */
-class PegawaiConfig extends CActiveRecord
+class PegawaiGaji extends CActiveRecord
 {
-
-    const BPJS_TIDAK_ADA = 0;
-    const BPJS_ADA = 1;
-
-    public $namaNipPegawai;
-    public $keteranganPegawai;
 
     /**
      * @return string the associated database table name
      */
     public function tableName()
     {
-        return 'pegawai_config';
+        return 'pegawai_gaji';
     }
 
     /**
@@ -42,15 +35,13 @@ class PegawaiConfig extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return [
-            ['pegawai_id', 'required', 'message' => '[{attribute}] harus dipilih!'],
-            ['bpjs', 'numerical', 'integerOnly' => true],
+            ['pegawai_id, gaji, per_tanggal', 'required', 'message' => '[{attribute}] harus diisi!'],
             ['pegawai_id, updated_by', 'length', 'max' => 10],
-            ['cuti_tahunan', 'length', 'max' => 5],
-            ['tunjangan_anak', 'length', 'max' => 18],
+            ['gaji', 'length', 'max' => 18],
             ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            ['id, pegawai_id, cuti_tahunan, bpjs, tunjangan_anak, updated_at, updated_by, created_at, namaNipPegawai, keteranganPegawai', 'safe', 'on' => 'search'],
+            ['id, pegawai_id, gaji, per_tanggal, updated_at, updated_by, created_at', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -75,14 +66,11 @@ class PegawaiConfig extends CActiveRecord
         return [
             'id' => 'ID',
             'pegawai_id' => 'Pegawai',
-            'cuti_tahunan' => 'Cuti Tahunan (Hari)',
-            'bpjs' => 'BPJS',
-            'tunjangan_anak' => 'Tunjangan Anak',
+            'gaji' => 'Gaji',
+            'per_tanggal' => 'Per Tanggal',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
-            'namaNipPegawai' => 'Nama/NIP',
-            'keteranganPegawai' => 'Unit Kerja'
         ];
     }
 
@@ -106,33 +94,22 @@ class PegawaiConfig extends CActiveRecord
 
         $criteria->compare('id', $this->id);
         $criteria->compare('pegawai_id', $this->pegawai_id);
-        $criteria->compare('cuti_tahunan', $this->cuti_tahunan, true);
-        $criteria->compare('bpjs', $this->bpjs);
-        $criteria->compare('tunjangan_anak', $this->tunjangan_anak, true);
+        $criteria->compare('gaji', $this->gaji, true);
+        $criteria->compare('per_tanggal', $this->per_tanggal, true);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
-        $criteria->with = ['pegawai', 'pegawai.cabang', 'pegawai.bagian', 'pegawai.jabatan'];
-        $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
-        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
 
         $sort = [
-            'attributes' => [
-                'namaNipPegawai' => [
-                    'asc' => 'CONCAT(pegawai.nama,pegawai.nip)',
-                    'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
-                ],
-                'keteranganPegawai' => [
-                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
-                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
-                ],
-                '*'
-            ]
+            'defaultOrder' => 'per_tanggal desc'
         ];
 
         return new CActiveDataProvider($this, [
             'criteria' => $criteria,
-            'sort' => $sort
+            'sort' => $sort,
+            'pagination' => [
+                'pageSize' => 5,
+            ],
         ]);
     }
 
@@ -140,7 +117,7 @@ class PegawaiConfig extends CActiveRecord
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return PegawaiConfig the static model class
+     * @return PegawaiGaji the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -158,44 +135,16 @@ class PegawaiConfig extends CActiveRecord
         return parent::beforeSave();
     }
 
-    public static function listBpjs()
+    public function beforeValidate()
     {
-        return [
-            self::BPJS_TIDAK_ADA => 'Tidak',
-            self::BPJS_ADA => 'Ada',
-        ];
+        $this->per_tanggal = !empty($this->per_tanggal) ? date_format(date_create_from_format('d-m-Y', $this->per_tanggal), 'Y-m-d') : NULL;
+        return parent::beforeValidate();
     }
 
-    public function getNamaBpjs()
+    public function afterFind()
     {
-        return $this->listBpjs()[$this->bpjs];
-    }
-
-    public function getNamaNipPegawai()
-    {
-        return $this->pegawai->nama . ' / ' . $this->pegawai->nip;
-    }
-
-    public function getKeteranganPegawai()
-    {
-        return $this->pegawai->cabang->nama . ' | ' . $this->pegawai->bagian->nama . ' | ' . $this->pegawai->jabatan->nama;
-    }
-
-    public function getGajiTerakhirRaw()
-    {
-        $hasil = Yii::app()->db->createCommand("
-            select gaji
-            from " . PegawaiGaji::model()->tableName() . "
-            where pegawai_id = {$this->id}
-            order by per_tanggal desc
-            limit 1
-			  ")->queryRow();
-        return $hasil['gaji'];
-    }
-
-    public function getGajiTerakhir()
-    {
-        return number_format($this->getGajiTerakhirRaw(), 2, ',', '.');
+        $this->per_tanggal = !is_null($this->per_tanggal) ? date_format(date_create_from_format('Y-m-d', $this->per_tanggal), 'd-m-Y') : '0';
+        return parent::afterFind();
     }
 
 }
