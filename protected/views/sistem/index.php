@@ -1,5 +1,5 @@
 <?php
-/* @var $this SiteController */
+/* @var $this SistemController */
 
 $this->pageTitle = Yii::app()->name;
 $this->pageHeader['title'] = 'Ahad SDM';
