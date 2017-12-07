@@ -130,4 +130,9 @@ class Bagian extends CActiveRecord
         return CHtml::listData(self::model()->findAll(['select' => 'id,nama', 'order' => 'nama']), 'id', 'nama');
     }
 
+    public static function getListString()
+    {
+        return CHtml::listData(self::model()->findAll(['select' => 'nama', 'order' => 'nama']), 'nama', 'nama');
+    }
+
 }

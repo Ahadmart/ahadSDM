@@ -130,4 +130,9 @@ class Jabatan extends CActiveRecord
         return CHtml::listData(self::model()->findAll(['select' => 'id,nama', 'order' => 'nama']), 'id', 'nama');
     }
 
+    public static function getListS()
+    {
+        return CHtml::listData(self::model()->findAll(['select' => 'nama', 'order' => 'nama']), 'nama', 'nama');
+    }
+
 }

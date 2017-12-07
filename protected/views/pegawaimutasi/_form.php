@@ -25,7 +25,7 @@ $form = $this->beginWidget('CActiveForm', [
     <div class="form-group">
         <?php echo $form->labelEx($model, 'pegawai_id', ['class' => 'col-sm-2 control-label']); ?>
         <div class="col-sm-10">
-            <?php echo $form->dropDownList($model, 'pegawai_id', /*Pegawai::getListPanjang()*/[], ['class' => 'form-control', 'prompt' => 'Pilih satu..', 'autofocus' => 'autofocus']); ?>
+            <?php echo $form->dropDownList($model, 'pegawai_id', Pegawai::getListPanjang(), ['class' => 'form-control', 'prompt' => 'Pilih satu..', 'autofocus' => 'autofocus']); ?>
             <?php echo $form->error($model, 'pegawai_id', ['class' => 'bg-red']); ?>
         </div>
     </div>

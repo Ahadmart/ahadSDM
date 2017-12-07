@@ -123,9 +123,9 @@ class PegawaiMutasi extends CActiveRecord
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
-        $criteria->with = ['pegawai'];
-//        $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
-//        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
+        $criteria->with = ['pegawai', 'cabang', 'bagian', 'jabatan'];
+        $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
+        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
 
         $sort = [
             'defaultOrder' => 't.per_tanggal desc, pegawai.nama',
@@ -134,10 +134,10 @@ class PegawaiMutasi extends CActiveRecord
                     'asc' => 'CONCAT(pegawai.nama,pegawai.nip)',
                     'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
                 ],
-//                'keteranganPegawai' => [
-//                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
-//                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
-//                ],
+                'keteranganPegawai' => [
+                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
+                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
+                ],
                 '*'
             ]
         ];
@@ -189,7 +189,7 @@ class PegawaiMutasi extends CActiveRecord
 
     public function getKeteranganPegawai()
     {
-        return '';//$this->pegawai->cabang->nama . ' | ' . $this->pegawai->bagian->nama . ' | ' . $this->pegawai->jabatan->nama;
+        return $this->cabang->nama . ' | ' . $this->bagian->nama . ' | ' . $this->jabatan->nama;
     }
 
     /**

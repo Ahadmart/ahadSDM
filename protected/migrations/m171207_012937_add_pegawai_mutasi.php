@@ -24,6 +24,7 @@ class m171207_012937_add_pegawai_mutasi extends CDbMigration
             KEY `fk_mutasi_jabatan_idx` (`jabatan_id`),
             KEY `fk_mutasi_bagian_idx` (`bagian_id`),
             KEY `fk_mutasi_cabang_idx` (`cabang_id`),
+            KEY `mutasi_per_tanggal_idx` (`per_tanggal`),
             CONSTRAINT `fk_mutasi_bagian` FOREIGN KEY (`bagian_id`) REFERENCES `bagian` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
             CONSTRAINT `fk_mutasi_cabang` FOREIGN KEY (`cabang_id`) REFERENCES `cabang` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
             CONSTRAINT `fk_mutasi_jabatan` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -40,17 +41,8 @@ class m171207_012937_add_pegawai_mutasi extends CDbMigration
         $this->execute("
             INSERT INTO pegawai_mutasi (pegawai_id,nama,per_tanggal,jabatan_id,bagian_id,cabang_id,created_at,updated_by)
             (
-            SELECT 
-                id,
-                nama,
-                date_format(created_at,'%Y-%m-%d'),
-                jabatan_id,
-                bagian_id,
-                cabang_id,
-                NOW(),
-                1
-            FROM
-                pegawai
+            SELECT id, nama, date_format(created_at,'%Y-%m-%d'), jabatan_id, bagian_id, cabang_id, NOW(), 1
+            FROM pegawai
             )
             ");
 

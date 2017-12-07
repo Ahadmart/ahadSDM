@@ -33,15 +33,15 @@ if (!empty($flashmsg)) {
                 ],
                 [
                     'label' => 'Cabang',
-                    'name' => 'pegawai.cabang.nama'
+                    'name' => 'cabang.nama'
                 ],
                 [
                     'label' => 'Bagian',
-                    'name' => 'pegawai.bagian.nama'
+                    'name' => 'bagian.nama'
                 ],
                 [
                     'label' => 'Jabatan',
-                    'name' => 'pegawai.jabatan.nama'
+                    'name' => 'jabatan.nama'
                 ],
                 'per_tanggal',
                 'keterangan',

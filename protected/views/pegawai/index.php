@@ -50,24 +50,30 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                         'class' => 'BDataColumn',
                         'name' => 'tanggal_lahir'
                     ],
-//                    [
-//                        'class' => 'BDataColumn',
-//                        'name' => 'cabang_id',
-//                        'value' => '$data->cabang->nama',
-//                        'filter' => Cabang::getList()
-//                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'namaCabang',
+                        'value' => '$data->cabangTerakhir',
+                        'filter' => Cabang::getListString()
+                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'namaBagian',
+                        'value' => '$data->bagianTerakhir',
+                        'filter' => Bagian::getListString()
+                    ],
 //                    [
 //                        'class' => 'BDataColumn',
 //                        'name' => 'bagian_id',
 //                        'value' => '$data->bagian->nama',
 //                        'filter' => Bagian::getList()
 //                    ],
-//                    [
-//                        'class' => 'BDataColumn',
-//                        'name' => 'jabatan_id',
-//                        'value' => '$data->jabatan->nama',
-//                        'filter' => Jabatan::getList()
-//                    ],
+                    [
+                        'class' => 'BDataColumn',
+                        'name' => 'namaJabatan',
+                        'value' => '$data->jabatanTerakhir',
+                        'filter' => Jabatan::getListS()
+                    ],
                     [
                         'class' => 'BDataColumn',
                         'name' => 'telpon'

@@ -112,9 +112,9 @@ class PegawaiConfig extends CActiveRecord
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
-        $criteria->with = ['pegawai', 'pegawai.cabang', 'pegawai.bagian', 'pegawai.jabatan'];
+        $criteria->with = ['pegawai'];
         $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
-        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
+//        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
 
         $sort = [
             'attributes' => [
@@ -122,10 +122,10 @@ class PegawaiConfig extends CActiveRecord
                     'asc' => 'CONCAT(pegawai.nama,pegawai.nip)',
                     'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
                 ],
-                'keteranganPegawai' => [
-                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
-                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
-                ],
+//                'keteranganPegawai' => [
+//                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
+//                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
+//                ],
                 '*'
             ]
         ];

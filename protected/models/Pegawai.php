@@ -24,6 +24,7 @@ class Pegawai extends CActiveRecord
 {
 
     public $namaCabang;
+    public $cabangTerakhirId;
     public $namaBagian;
     public $namaJabatan;
     public $namaNipPegawai;
@@ -51,7 +52,7 @@ class Pegawai extends CActiveRecord
             ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            ['id, nip, nama, alamat, tanggal_lahir, telpon, perusahaan, updated_at, updated_by, created_at, namaNipPegawai', 'safe', 'on' => 'search'],
+            ['id, nip, nama, alamat, tanggal_lahir, telpon, perusahaan, updated_at, updated_by, created_at, namaNipPegawai, namaCabang, namaBagian, namaJabatan', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -79,7 +80,7 @@ class Pegawai extends CActiveRecord
             'nip' => 'NIP',
             'nama' => 'Nama',
             'alamat' => 'Alamat',
-            'tanggal_lahir' => 'Tanggal Lahir',
+            'tanggal_lahir' => 'Tgl Lahir',
             'telpon' => 'Telpon',
             'perusahaan' => 'Perusahaan',
             'updated_at' => 'Updated At',
@@ -118,12 +119,30 @@ class Pegawai extends CActiveRecord
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('CONCAT(nama, nip)', $this->namaNipPegawai, true);
+        $criteria->compare('(SELECT cabang.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id WHERE pegawai_mutasi.pegawai_id = t.id)', $this->namaCabang);
+        $criteria->compare('(SELECT bagian.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id WHERE pegawai_mutasi.pegawai_id = t.id)', $this->namaBagian);
+        $criteria->compare('(SELECT jabatan.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id)', $this->namaJabatan);
 
         $sort = [
             'attributes' => [
                 'namaNipPegawai' => [
                     'asc' => 'CONCAT(nama, nip)',
                     'desc' => 'CONCAT(nama, nip) desc'
+                ],
+                'namaCabang' => [
+                    'asc' => '(SELECT cabang.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id WHERE pegawai_mutasi.pegawai_id = t.id)',
+                    'desc' => '(SELECT cabang.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id WHERE pegawai_mutasi.pegawai_id = t.id) desc',
+                    'label' => 'Cabang'
+                ],
+                'namaBagian' => [
+                    'asc' => '(SELECT bagian.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id WHERE pegawai_mutasi.pegawai_id = t.id)',
+                    'desc' => '(SELECT bagian.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id WHERE pegawai_mutasi.pegawai_id = t.id) desc',
+                    'label' => 'Bagian'
+                ],
+                'namaJabatan' => [
+                    'asc' => '(SELECT jabatan.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id)',
+                    'desc' => '(SELECT jabatan.nama FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id) desc',
+                    'label' => 'Jabatan'
                 ],
                 '*'
             ]
@@ -173,12 +192,12 @@ class Pegawai extends CActiveRecord
     {
         $sql = "
         SELECT 
-                pegawai_id,
+            pegawai.id,
             pegawai.nama,
             pegawai.nip,
-            cabang.nama,
-            bagian.nama,
-            jabatan.nama
+            cabang.nama namaCabang,
+            bagian.nama namaBagian,
+            jabatan.nama namaJabatan
         FROM
             pegawai_mutasi t
                 JOIN
@@ -196,17 +215,80 @@ class Pegawai extends CActiveRecord
             bagian ON t.bagian_id = bagian.id
                 JOIN
             jabatan ON t.jabatan_id = jabatan.id
-
+        ORDER BY pegawai.nama
        ";
-//        return CHtml::listData($model, 'id', function($model) {
-//                    return $model->nama . ' [' . $model->nip . ']' . ' [' . $model->namaCabang . '] [' . $model->namaBagian . '] [' . $model->namaJabatan . ']';
-//                });
-        return '';
+        $model = Yii::app()->db->createCommand($sql)->queryAll();
+        return CHtml::listData($model, 'id', function($model) {
+                    return $model['nama'] . ' [' . $model['nip'] . ']' . ' [' . $model['namaCabang'] . '] [' . $model['namaBagian'] . '] [' . $model['namaJabatan'] . ']';
+                });
     }
 
     public function getNamaNipPegawai()
     {
         return $this->pegawai->nama . ' / ' . $this->pegawai->nip;
+    }
+
+    public function getCabangTerakhir()
+    {
+        $sql = "
+        SELECT 
+            cabang.nama
+        FROM
+            pegawai_mutasi
+                NATURAL JOIN
+            (SELECT 
+                pegawai_id, MAX(per_tanggal) per_tanggal
+            FROM
+                pegawai_mutasi
+            GROUP BY pegawai_id) t_max
+                JOIN
+            cabang ON cabang.id = pegawai_mutasi.cabang_id
+        WHERE
+            pegawai_id = :pegawaiId
+               ";
+        return Yii::app()->db->createCommand($sql)->bindValue(':pegawaiId', $this->id)->queryRow()['nama'];
+    }
+
+    public function getBagianTerakhir()
+    {
+        $sql = "
+        SELECT 
+            bagian.nama
+        FROM
+            pegawai_mutasi
+                NATURAL JOIN
+            (SELECT 
+                pegawai_id, MAX(per_tanggal) per_tanggal
+            FROM
+                pegawai_mutasi
+            GROUP BY pegawai_id) t_max
+                JOIN
+            bagian ON bagian.id = pegawai_mutasi.bagian_id
+        WHERE
+            pegawai_id = :pegawaiId
+               ";
+        return Yii::app()->db->createCommand($sql)->bindValue(':pegawaiId', $this->id)->queryRow()['nama'];
+    }
+
+    public function getJabatanTerakhir()
+    {
+        $sql = "
+        SELECT 
+            jabatan.nama
+        FROM
+            pegawai_mutasi
+                NATURAL JOIN
+            (SELECT 
+                pegawai_id, MAX(per_tanggal) per_tanggal
+            FROM
+                pegawai_mutasi
+            GROUP BY pegawai_id) t_max
+                JOIN
+            jabatan ON jabatan.id = pegawai_mutasi.jabatan_id
+        WHERE
+            pegawai_id = :pegawaiId
+               ";
+        return Yii::app()->db->createCommand($sql)->bindValue(':pegawaiId', $this->id)->queryRow()['nama'];
     }
 
 }
