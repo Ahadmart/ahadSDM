@@ -1,26 +1,29 @@
 <?php
 
 /**
- * This is the model class for table "pegawai_cuti".
+ * This is the model class for table "pegawai_mutasi".
  *
- * The followings are the available columns in table 'pegawai_cuti':
+ * The followings are the available columns in table 'pegawai_mutasi':
  * @property string $id
  * @property string $pegawai_id
  * @property string $nama
- * @property string $cuti
- * @property string $mulai_cuti
- * @property string $alasan_cuti_id
+ * @property string $per_tanggal
  * @property string $keterangan
+ * @property string $jabatan_id
+ * @property string $bagian_id
+ * @property string $cabang_id
  * @property string $updated_at
  * @property string $updated_by
  * @property string $created_at
  *
  * The followings are the available model relations:
- * @property AlasanCuti $alasanCuti
+ * @property Bagian $bagian
+ * @property Cabang $cabang
+ * @property Jabatan $jabatan
  * @property Pegawai $pegawai
  * @property User $updatedBy
  */
-class PegawaiCuti extends CActiveRecord
+class PegawaiMutasi extends CActiveRecord
 {
 
     public $namaNipPegawai;
@@ -31,7 +34,7 @@ class PegawaiCuti extends CActiveRecord
      */
     public function tableName()
     {
-        return 'pegawai_cuti';
+        return 'pegawai_mutasi';
     }
 
     /**
@@ -41,17 +44,16 @@ class PegawaiCuti extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('pegawai_id, nama, cuti, mulai_cuti, alasan_cuti_id', 'required', 'message' => '[{attribute}] harus diisi!'),
-            array('pegawai_id, alasan_cuti_id, updated_by', 'length', 'max' => 10),
-            array('nama', 'length', 'max' => 50),
-            array('cuti', 'length', 'max' => 4),
-            array('keterangan', 'length', 'max' => 250),
-            array('created_at, updated_at, updated_by', 'safe'),
+        return [
+            ['pegawai_id, nama, per_tanggal, jabatan_id, bagian_id, cabang_id', 'required', 'message' => '[{attribute}] harus diisi!'],
+            ['pegawai_id, jabatan_id, bagian_id, cabang_id, updated_by', 'length', 'max' => 10],
+            ['nama', 'length', 'max' => 50],
+            ['keterangan', 'length', 'max' => 1000],
+            ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, pegawai_id, nama, cuti, mulai_cuti, alasan_cuti_id, keterangan, updated_at, updated_by, created_at, namaNipPegawai, keteranganPegawai', 'safe', 'on' => 'search'),
-        );
+            ['id, pegawai_id, nama, per_tanggal, keterangan, jabatan_id, bagian_id, cabang_id, updated_at, updated_by, created_at, namaNipPegawai, keteranganPegawai', 'safe', 'on' => 'search'],
+        ];
     }
 
     /**
@@ -61,11 +63,13 @@ class PegawaiCuti extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'alasanCuti' => array(self::BELONGS_TO, 'AlasanCuti', 'alasan_cuti_id'),
-            'pegawai' => array(self::BELONGS_TO, 'Pegawai', 'pegawai_id'),
-            'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
-        );
+        return [
+            'bagian' => [self::BELONGS_TO, 'Bagian', 'bagian_id'],
+            'cabang' => [self::BELONGS_TO, 'Cabang', 'cabang_id'],
+            'jabatan' => [self::BELONGS_TO, 'Jabatan', 'jabatan_id'],
+            'pegawai' => [self::BELONGS_TO, 'Pegawai', 'pegawai_id'],
+            'updatedBy' => [self::BELONGS_TO, 'User', 'updated_by'],
+        ];
     }
 
     /**
@@ -73,20 +77,21 @@ class PegawaiCuti extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id' => 'ID',
             'pegawai_id' => 'Pegawai',
             'nama' => 'Nama',
-            'cuti' => 'Cuti (Hari)',
-            'mulai_cuti' => 'Mulai Cuti',
-            'alasan_cuti_id' => 'Alasan Cuti',
+            'per_tanggal' => 'Per Tanggal',
             'keterangan' => 'Keterangan',
+            'jabatan_id' => 'Jabatan',
+            'bagian_id' => 'Bagian',
+            'cabang_id' => 'Cabang',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
             'namaNipPegawai' => 'Nama/NIP',
             'keteranganPegawai' => 'Unit Kerja'
-        );
+        ];
     }
 
     /**
@@ -107,46 +112,46 @@ class PegawaiCuti extends CActiveRecord
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id, true);
-        $criteria->compare('pegawai_id', $this->pegawai_id, true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('pegawai_id', $this->pegawai_id);
         $criteria->compare('nama', $this->nama, true);
-        $criteria->compare('cuti', $this->cuti, true);
-        $criteria->compare("DATE_FORMAT(t.mulai_cuti, '%d-%m-%Y')", $this->mulai_cuti, true);
-        $criteria->compare('alasan_cuti_id', $this->alasan_cuti_id);
+        $criteria->compare("DATE_FORMAT(t.per_tanggal, '%d-%m-%Y')", $this->per_tanggal, true);
         $criteria->compare('keterangan', $this->keterangan, true);
+        $criteria->compare('jabatan_id', $this->jabatan_id);
+        $criteria->compare('bagian_id', $this->bagian_id);
+        $criteria->compare('cabang_id', $this->cabang_id);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
-        $criteria->with = ['pegawai', 'pegawai.cabang', 'pegawai.bagian', 'pegawai.jabatan'];
-        $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
-        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
+        $criteria->with = ['pegawai'];
+//        $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
+//        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
 
         $sort = [
-            'defaultOrder' => 't.mulai_cuti desc, pegawai.nama',
+            'defaultOrder' => 't.per_tanggal desc, pegawai.nama',
             'attributes' => [
                 'namaNipPegawai' => [
                     'asc' => 'CONCAT(pegawai.nama,pegawai.nip)',
                     'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
                 ],
-                'keteranganPegawai' => [
-                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
-                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
-                ],
+//                'keteranganPegawai' => [
+//                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
+//                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
+//                ],
                 '*'
             ]
         ];
-
-        return new CActiveDataProvider($this, array(
+        return new CActiveDataProvider($this, [
             'criteria' => $criteria,
             'sort' => $sort
-        ));
+        ]);
     }
 
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return PegawaiCuti the static model class
+     * @return PegawaiMutasi the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -167,13 +172,13 @@ class PegawaiCuti extends CActiveRecord
     public function beforeValidate()
     {
         $this->nama = Yii::app()->db->createCommand('select nama from pegawai where id=:pegawaiId')->bindValue(':pegawaiId', $this->pegawai_id)->queryRow()['nama'];
-        $this->mulai_cuti = !empty($this->mulai_cuti) ? date_format(date_create_from_format('d-m-Y', $this->mulai_cuti), 'Y-m-d') : NULL;
+        $this->per_tanggal = !empty($this->per_tanggal) ? date_format(date_create_from_format('d-m-Y', $this->per_tanggal), 'Y-m-d') : NULL;
         return parent::beforeValidate();
     }
 
     public function afterFind()
     {
-        $this->mulai_cuti = !is_null($this->mulai_cuti) ? date_format(date_create_from_format('Y-m-d', $this->mulai_cuti), 'd-m-Y') : '0';
+        $this->per_tanggal = !is_null($this->per_tanggal) ? date_format(date_create_from_format('Y-m-d', $this->per_tanggal), 'd-m-Y') : '0';
         return parent::afterFind();
     }
 
@@ -184,7 +189,17 @@ class PegawaiCuti extends CActiveRecord
 
     public function getKeteranganPegawai()
     {
-        return $this->pegawai->cabang->nama . ' | ' . $this->pegawai->bagian->nama . ' | ' . $this->pegawai->jabatan->nama;
+        return '';//$this->pegawai->cabang->nama . ' | ' . $this->pegawai->bagian->nama . ' | ' . $this->pegawai->jabatan->nama;
+    }
+
+    /**
+     * Untuk mengecek apakah pegawaiId sudah pernah mutasi atau belum
+     * @param int $pegawaiId
+     * @return bool true jika sudah pernah, false jika belum pernah
+     */
+    public static function sudahPernah($pegawaiId)
+    {
+        return is_null(self::model()->find('pegawai_id=:pegawaiId', [':pegawaiId' => $pegawaiId])) ? false : true;
     }
 
 }

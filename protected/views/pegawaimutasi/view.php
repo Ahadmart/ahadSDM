@@ -1,78 +1,53 @@
 <?php
-/* @var $this PegawaiController */
-/* @var $model Pegawai */
+/* @var $this PegawaimutasiController */
+/* @var $model PegawaiMutasi */
 
 $this->breadcrumbs = [
-    'Pegawai' => ['index'],
+    'Pegawai Mutasi' => ['index'],
     $model->nama,
 ];
 
 $this->pageHeader['title'] = 'View';
-$this->pageHeader['desc'] = 'Pegawai';
-$this->pageHeader['boxTitle'] = 'Pegawai: ' . $model->nama;
+$this->pageHeader['desc'] = 'Pegawai Mutasi';
+$this->pageHeader['boxTitle'] = 'Pegawai Mutasi: ' . $model->nama;
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->nama;
+if (!empty($flashmsg)) {
+    ?>
+    <div class="callout callout-success">
+        <?= $flashmsg ?>
+    </div>
+    <?php
+}
 ?>
 <div class="row">
-    <div class="col-sm-12 col-lg-6">
+    <div class="col-sm-12">        
         <?php
-        $pegawai = [
-            'nip',
-            'nama',
-            'alamat',
-            'tanggal_lahir',
-            'telpon',
-            'perusahaan',
-        ];
-        $unitKerja = [];
-        if (!$sudahPernahMutasi) {
-            $unitKerja = [
+        $this->widget('BDetailView', [
+            'data' => $model,
+            'attributes' => [
+                'nama',
+                [
+                    'label' => 'NIP',
+                    'name' => 'pegawai.nip'
+                ],
                 [
                     'label' => 'Cabang',
-                    'name' => 'cabang.nama'
+                    'name' => 'pegawai.cabang.nama'
                 ],
                 [
                     'label' => 'Bagian',
-                    'name' => 'bagian.nama'
+                    'name' => 'pegawai.bagian.nama'
                 ],
                 [
                     'label' => 'Jabatan',
-                    'name' => 'jabatan.nama'
+                    'name' => 'pegawai.jabatan.nama'
                 ],
-            ];
-        }
-
-        $this->widget('BDetailView', [
-            'data' => $model,
-            'attributes' => array_merge($pegawai, $unitKerja)
+                'per_tanggal',
+                'keterangan',
+            ],
         ]);
         ?>
-    </div>
-    <div class=" col-lg-6">
-        <h4>Riwayat Kerja</h4>
-        <?php
-        $this->widget('BGridView', [
-            'id' => 'pegawai-mutasi-grid',
-            'dataProvider' => $daftarMutasi->search(),
-            'filter' => null,
-            'htmlOptions' => ['style' => 'width: 100%'],
-            'columns' => [
-                [
-                    'class' => 'BDataColumn',
-                    'name' => 'keteranganPegawai',
-                    'value' => '$data->getKeteranganPegawai()'
-                ],
-                [
-                    'class' => 'BDataColumn',
-                    'name' => 'per_tanggal'
-                ],
-                [
-                    'class' => 'BDataColumn',
-                    'name' => 'keterangan'
-                ],
-            ]
-        ]);
-        ?>        
     </div>
 </div>
 <?php

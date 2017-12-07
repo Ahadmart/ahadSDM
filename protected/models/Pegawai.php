@@ -9,9 +9,6 @@
  * @property string $nama
  * @property string $alamat
  * @property string $tanggal_lahir
- * @property string $jabatan_id
- * @property string $bagian_id
- * @property string $cabang_id
  * @property string $telpon
  * @property string $perusahaan
  * @property string $updated_at
@@ -19,9 +16,6 @@
  * @property string $created_at
  *
  * The followings are the available model relations:
- * @property Bagian $bagian
- * @property Cabang $cabang
- * @property Jabatan $jabatan
  * @property User $updatedBy
  * @property PegawaiConfig[] $pegawaiConfigs
  * @property PegawaiCuti[] $pegawaiCutis
@@ -50,14 +44,14 @@ class Pegawai extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return [
-            ['nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon', 'required', 'message' => '[{attribute}] harus diisi!'],
+            ['nama, alamat, tanggal_lahir, telpon', 'required', 'message' => '[{attribute}] harus diisi!'],
             ['nip, nama, telpon, perusahaan', 'length', 'max' => 50],
             ['alamat', 'length', 'max' => 250],
             ['jabatan_id, bagian_id, cabang_id, updated_by', 'length', 'max' => 10],
             ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            ['id, nip, nama, alamat, tanggal_lahir, jabatan_id, bagian_id, cabang_id, telpon, perusahaan, updated_at, updated_by, created_at, namaNipPegawai', 'safe', 'on' => 'search'],
+            ['id, nip, nama, alamat, tanggal_lahir, telpon, perusahaan, updated_at, updated_by, created_at, namaNipPegawai', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -69,9 +63,6 @@ class Pegawai extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return [
-            'bagian' => [self::BELONGS_TO, 'Bagian', 'bagian_id'],
-            'cabang' => [self::BELONGS_TO, 'Cabang', 'cabang_id'],
-            'jabatan' => [self::BELONGS_TO, 'Jabatan', 'jabatan_id'],
             'updatedBy' => [self::BELONGS_TO, 'User', 'updated_by'],
             'pegawaiConfigs' => [self::HAS_MANY, 'PegawaiConfig', 'pegawai_id'],
             'pegawaiCutis' => [self::HAS_MANY, 'PegawaiCuti', 'pegawai_id'],
@@ -89,9 +80,6 @@ class Pegawai extends CActiveRecord
             'nama' => 'Nama',
             'alamat' => 'Alamat',
             'tanggal_lahir' => 'Tanggal Lahir',
-            'jabatan_id' => 'Jabatan',
-            'bagian_id' => 'Bagian',
-            'cabang_id' => 'Cabang',
             'telpon' => 'Telpon',
             'perusahaan' => 'Perusahaan',
             'updated_at' => 'Updated At',
@@ -124,9 +112,6 @@ class Pegawai extends CActiveRecord
         $criteria->compare('nama', $this->nama, true);
         $criteria->compare('alamat', $this->alamat, true);
         $criteria->compare("DATE_FORMAT(t.tanggal_lahir, '%d-%m-%Y')", $this->tanggal_lahir, true);
-        $criteria->compare('jabatan_id', $this->jabatan_id);
-        $criteria->compare('bagian_id', $this->bagian_id);
-        $criteria->compare('cabang_id', $this->cabang_id);
         $criteria->compare('telpon', $this->telpon, true);
         $criteria->compare('perusahaan', $this->perusahaan, true);
         $criteria->compare('updated_at', $this->updated_at, true);
@@ -186,10 +171,37 @@ class Pegawai extends CActiveRecord
 
     public static function getListPanjang()
     {
-        $model = self::model()->with(['cabang', 'bagian', 'jabatan'])->findAll(['select' => 't.id, t.nip, t.nama, cabang.nama as namaCabang, bagian.nama as namaBagian, jabatan.nama as namaJabatan', 'order' => 't.nama, t.nip']);
-        return CHtml::listData($model, 'id', function($model) {
-                    return $model->nama . ' [' . $model->nip . ']' . ' [' . $model->namaCabang . '] [' . $model->namaBagian . '] [' . $model->namaJabatan . ']';
-                });
+        $sql = "
+        SELECT 
+                pegawai_id,
+            pegawai.nama,
+            pegawai.nip,
+            cabang.nama,
+            bagian.nama,
+            jabatan.nama
+        FROM
+            pegawai_mutasi t
+                JOIN
+            (SELECT 
+                pegawai_id, MAX(per_tanggal) per_tanggal_max
+            FROM
+                pegawai_mutasi
+            GROUP BY pegawai_id) AS t_max ON t.pegawai_id = t_max.pegawai_id
+                AND t.per_tanggal = t_max.per_tanggal_max
+                JOIN
+            pegawai ON t.pegawai_id = pegawai.id
+                JOIN
+            cabang ON t.cabang_id = cabang.id
+                JOIN
+            bagian ON t.bagian_id = bagian.id
+                JOIN
+            jabatan ON t.jabatan_id = jabatan.id
+
+       ";
+//        return CHtml::listData($model, 'id', function($model) {
+//                    return $model->nama . ' [' . $model->nip . ']' . ' [' . $model->namaCabang . '] [' . $model->namaBagian . '] [' . $model->namaJabatan . ']';
+//                });
+        return '';
     }
 
     public function getNamaNipPegawai()

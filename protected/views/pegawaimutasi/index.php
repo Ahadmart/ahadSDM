@@ -1,14 +1,14 @@
 <?php
-/* @var $this PegawaiController */
-/* @var $model Pegawai */
+/* @var $this PegawaimutasiController */
+/* @var $model PegawaiMutasi */
 
 $this->breadcrumbs = [
-    'Pegawai' => ['index'],
+    'Mutasi Pegawai' => ['index'],
     'Index',
 ];
 
-$this->pageHeader['title'] = 'Pegawai';
-$this->pageHeader['desc'] = 'Daftar Pegawai';
+$this->pageHeader['title'] = 'Mutasi Pegawai';
+$this->pageHeader['desc'] = 'Daftar Mutasi Pegawai';
 $this->pageHeader['boxTitle'] = 'Index';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
@@ -24,11 +24,11 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
             /*  Agar focus tetap di input cari nama/nip setelah pencarian */
             Yii::app()->clientScript->registerScript('autoFocus', ''
                     . '$( document ).ajaxComplete(function() {'
-                    . '$("input[name=\'Pegawai[namaNipPegawai]\'").select();'
+                    . '$("input[name=\'PegawaiMutasi[namaNipPegawai]\'").select();'
                     . '});');
 
             $this->widget('BGridView', [
-                'id' => 'pegawai-grid',
+                'id' => 'pegawai-mutasi-grid',
                 'dataProvider' => $model->search(),
                 'filter' => $model,
                 'htmlOptions' => ['style' => 'width: 100%'],
@@ -44,37 +44,16 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'alamat'
+                        'name' => 'keteranganPegawai',
+                        'value' => '$data->getKeteranganPegawai()'
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'tanggal_lahir'
-                    ],
-//                    [
-//                        'class' => 'BDataColumn',
-//                        'name' => 'cabang_id',
-//                        'value' => '$data->cabang->nama',
-//                        'filter' => Cabang::getList()
-//                    ],
-//                    [
-//                        'class' => 'BDataColumn',
-//                        'name' => 'bagian_id',
-//                        'value' => '$data->bagian->nama',
-//                        'filter' => Bagian::getList()
-//                    ],
-//                    [
-//                        'class' => 'BDataColumn',
-//                        'name' => 'jabatan_id',
-//                        'value' => '$data->jabatan->nama',
-//                        'filter' => Jabatan::getList()
-//                    ],
-                    [
-                        'class' => 'BDataColumn',
-                        'name' => 'telpon'
+                        'name' => 'per_tanggal'
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'perusahaan'
+                        'name' => 'keterangan'
                     ],
                     ['class' => 'BButtonColumn']
                 ]

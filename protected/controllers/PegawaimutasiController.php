@@ -1,23 +1,17 @@
 <?php
 
-class PegawaiController extends Controller
+class PegawaimutasiController extends Controller
 {
 
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView($id)
+    public function actionView($id, $flashmsg = '')
     {
-        
-        $daftarMutasi = new PegawaiMutasi('search');
-        $daftarMutasi->unsetAttributes();  // clear any default values
-        $daftarMutasi->pegawai_id = $id;
-        
         $this->render('view', [
             'model' => $this->loadModel($id),
-            'sudahPernahMutasi' => PegawaiMutasi::sudahPernah($id),
-            'daftarMutasi' => $daftarMutasi
+            'flashmsg' => $flashmsg
         ]);
     }
 
@@ -29,21 +23,20 @@ class PegawaiController extends Controller
     {
         $this->layout = '//layouts/box_form';
 
-        $model = new Pegawai;
+        $model = new PegawaiMutasi;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Pegawai'])) {
-            $model->attributes = $_POST['Pegawai'];
+        if (isset($_POST['PegawaiMutasi'])) {
+            $model->attributes = $_POST['PegawaiMutasi'];
             if ($model->save()) {
-                $this->redirect(['view', 'id' => $model->id]);
+                $this->redirect(['view', 'id' => $model->id, 'flashmsg' => 'Mutasi berhasil diproses']);
             }
         }
 
         $this->render('tambah', [
             'model' => $model,
-            'sudahPernahMutasi' => false
         ]);
     }
 
@@ -60,16 +53,15 @@ class PegawaiController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Pegawai'])) {
-            $model->attributes = $_POST['Pegawai'];
+        if (isset($_POST['PegawaiMutasi'])) {
+            $model->attributes = $_POST['PegawaiMutasi'];
             if ($model->save()) {
-                $this->redirect(['view', 'id' => $id]);
+                $this->redirect(['view', 'id' => $id, 'flashmsg' => 'Data mutasi berhasil diperbaharui']);
             }
         }
 
         $this->render('ubah', [
             'model' => $model,
-            'sudahPernahMutasi' => PegawaiMutasi::sudahPernah($id)
         ]);
     }
 
@@ -92,10 +84,10 @@ class PegawaiController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Pegawai('search');
+        $model = new PegawaiMutasi('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Pegawai'])) {
-            $model->attributes = $_GET['Pegawai'];
+        if (isset($_GET['PegawaiMutasi'])) {
+            $model->attributes = $_GET['PegawaiMutasi'];
         }
 
         $this->render('index', [
@@ -107,12 +99,12 @@ class PegawaiController extends Controller
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Pegawai the loaded model
+     * @return PegawaiMutasi the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model = Pegawai::model()->findByPk($id);
+        $model = PegawaiMutasi::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -120,11 +112,11 @@ class PegawaiController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param Pegawai $model the model to be validated
+     * @param PegawaiMutasi $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'pegawai-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'pegawai-mutasi-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
@@ -132,9 +124,13 @@ class PegawaiController extends Controller
 
     public function renderLinkToView($data)
     {
-        return '<a href="' .
-                $this->createUrl('view', ['id' => $data->id]) . '">' .
-                $data->nama . ' / ' . $data->nip . '</a>';
+        $return = '';
+        if (isset($data->pegawai)) {
+            $return = '<a href="' .
+                    $this->createUrl('view', ['id' => $data->id]) . '">' .
+                    $data->pegawai->nama . ' / ' . $data->pegawai->nip . '</a>';
+        }
+        return $return;
     }
 
 }
