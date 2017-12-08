@@ -1,7 +1,7 @@
 <?php
 /* @var $this PegawaicutiController */
 /* @var $model PegawaiCuti */
-Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/plugins/pace/pace.min.css');
+
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/bower_components/PACE/pace.min.js', CClientScript::POS_HEAD);
 
 $this->breadcrumbs = [
