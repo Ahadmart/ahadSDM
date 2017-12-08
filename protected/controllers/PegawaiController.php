@@ -9,6 +9,7 @@ class PegawaiController extends Controller
      */
     public function actionView($id)
     {
+        $this->layout = '//layouts/nobox';
         
         $daftarMutasi = new PegawaiMutasi('search');
         $daftarMutasi->unsetAttributes();  // clear any default values
@@ -27,7 +28,7 @@ class PegawaiController extends Controller
      */
     public function actionTambah()
     {
-        $this->layout = '//layouts/box_form';
+        $this->layout = '//layouts/box_form_medium';
 
         $model = new Pegawai;
 
@@ -53,7 +54,7 @@ class PegawaiController extends Controller
      */
     public function actionUbah($id)
     {
-        $this->layout = '//layouts/box_form';
+        $this->layout = '//layouts/box_form_medium';
 
         $model = $this->loadModel($id);
 

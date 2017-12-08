@@ -19,9 +19,10 @@ $form = $this->beginWidget('CActiveForm', [
 ?>
 
 <?php echo $form->errorSummary($model, 'Error: Perbaiki input', null, ['class' => 'callout callout-danger']); ?>
-
-<div class="form-group">
-    <?php echo $form->labelEx($model, 'per_tanggal', ['class' => 'col-sm-3 control-label']); ?>
+<?php echo $form->hiddenField($model, 'pegawai_id', ['value' => $pegawai->pegawai_id]); ?>
+<div class = "form-group">
+    <?php echo $form->labelEx($model, 'per_tanggal', ['class' => 'col-sm-3 control-label']);
+    ?>
     <div class="col-sm-9">
         <div class="input-group date">
             <div class="input-group-addon">

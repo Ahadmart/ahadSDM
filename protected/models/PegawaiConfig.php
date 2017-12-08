@@ -25,6 +25,7 @@ class PegawaiConfig extends CActiveRecord
 
     public $namaNipPegawai;
     public $keteranganPegawai;
+    public $gajiTerkini;
 
     /**
      * @return string the associated database table name
@@ -50,7 +51,7 @@ class PegawaiConfig extends CActiveRecord
             ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            ['id, pegawai_id, cuti_tahunan, bpjs, tunjangan_anak, updated_at, updated_by, created_at, namaNipPegawai, keteranganPegawai', 'safe', 'on' => 'search'],
+            ['id, pegawai_id, cuti_tahunan, bpjs, tunjangan_anak, updated_at, updated_by, created_at, namaNipPegawai, keteranganPegawai, gajiTerkini', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -114,18 +115,24 @@ class PegawaiConfig extends CActiveRecord
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->with = ['pegawai'];
         $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
-//        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
+        $criteria->compare("(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id)", $this->keteranganPegawai, true);
+        $criteria->compare("(SELECT gaji FROM pegawai_gaji WHERE pegawai_id = t.pegawai_id ORDER BY per_tanggal DESC LIMIT 1)", $this->gajiTerkini, true);
 
         $sort = [
+            'defaultOrder' => 't.id desc',
             'attributes' => [
                 'namaNipPegawai' => [
                     'asc' => 'CONCAT(pegawai.nama,pegawai.nip)',
                     'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
                 ],
-//                'keteranganPegawai' => [
-//                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
-//                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
-//                ],
+                'keteranganPegawai' => [
+                    'asc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id)',
+                    'desc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id) desc'
+                ],
+                'gajiTerkini' => [
+                    'asc' => '(SELECT gaji FROM pegawai_gaji WHERE pegawai_id = t.pegawai_id ORDER BY per_tanggal DESC LIMIT 1)',
+                    'desc' => '(SELECT gaji FROM pegawai_gaji WHERE pegawai_id = t.pegawai_id ORDER BY per_tanggal DESC LIMIT 1) desc'
+                ],
                 '*'
             ]
         ];
@@ -178,7 +185,7 @@ class PegawaiConfig extends CActiveRecord
 
     public function getKeteranganPegawai()
     {
-        return $this->pegawai->cabang->nama . ' | ' . $this->pegawai->bagian->nama . ' | ' . $this->pegawai->jabatan->nama;
+        return $this->pegawai->cabangTerakhir . ' | ' . $this->pegawai->bagianTerakhir . ' | ' . $this->pegawai->jabatanTerakhir;
     }
 
     public function getGajiTerakhirRaw()
@@ -186,7 +193,7 @@ class PegawaiConfig extends CActiveRecord
         $hasil = Yii::app()->db->createCommand("
             select gaji
             from " . PegawaiGaji::model()->tableName() . "
-            where pegawai_id = {$this->id}
+            where pegawai_id = {$this->pegawai_id}
             order by per_tanggal desc
             limit 1
 			  ")->queryRow();

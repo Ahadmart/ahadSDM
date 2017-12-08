@@ -48,7 +48,7 @@ class Pegawai extends CActiveRecord
             ['nama, alamat, tanggal_lahir, telpon', 'required', 'message' => '[{attribute}] harus diisi!'],
             ['nip, nama, telpon, perusahaan', 'length', 'max' => 50],
             ['alamat', 'length', 'max' => 250],
-            ['jabatan_id, bagian_id, cabang_id, updated_by', 'length', 'max' => 10],
+            ['updated_by', 'length', 'max' => 10],
             ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.

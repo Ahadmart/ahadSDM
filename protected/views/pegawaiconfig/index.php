@@ -45,7 +45,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     [
                         'class' => 'BDataColumn',
                         'name' => 'keteranganPegawai',
-                        //'value' => '$data->getKeteranganPegawai()'
+                        'value' => '$data->getKeteranganPegawai()'
                     ],
                     [
                         'class' => 'BDataColumn',
@@ -71,6 +71,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     [
                         'class' => 'BDataColumn',
                         'header' => 'Gaji',
+                        'name' => 'gajiTerkini',
                         'value' => '$data->gajiTerakhir',
                         'htmlOptions' => ['class' => 'text-right'],
                         'headerHtmlOptions' => ['class' => 'text-right']

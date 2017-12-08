@@ -101,7 +101,7 @@ class PegawaiGaji extends CActiveRecord
         $criteria->compare('created_at', $this->created_at, true);
 
         $sort = [
-            'defaultOrder' => 'per_tanggal desc'
+            'defaultOrder' => 'per_tanggal desc, updated_at desc'
         ];
 
         return new CActiveDataProvider($this, [
