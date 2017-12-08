@@ -7,12 +7,13 @@ class PegawaicutiController extends Controller
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView($id)
+    public function actionView($id, $flashmsg = '')
     {
         $this->layout = '//layouts/box_medium';
 
         $this->render('view', [
             'model' => $this->loadModel($id),
+            'flashmsg' => $flashmsg
         ]);
     }
 
@@ -32,7 +33,7 @@ class PegawaicutiController extends Controller
         if (isset($_POST['PegawaiCuti'])) {
             $model->attributes = $_POST['PegawaiCuti'];
             if ($model->save()) {
-                $this->redirect(['view', 'id' => $model->id]);
+                $this->redirect(['view', 'id' => $model->id, 'flashmsg' => 'Cuti berhasil diproses']);
             }
         }
 
@@ -57,7 +58,7 @@ class PegawaicutiController extends Controller
         if (isset($_POST['PegawaiCuti'])) {
             $model->attributes = $_POST['PegawaiCuti'];
             if ($model->save()) {
-                $this->redirect(['view', 'id' => $id]);
+                $this->redirect(['view', 'id' => $id, 'flashmsg' => 'Data cuti berhasil diperbaharui']);
             }
         }
 
@@ -124,6 +125,17 @@ class PegawaicutiController extends Controller
     }
 
     public function renderLinkToView($data)
+    {
+        $return = '';
+        if (isset($data->pegawai)) {
+            $return = '<a href="' .
+                    $this->createUrl('view', ['id' => $data->id]) . '">' .
+                    $data->pegawai->nama . ' / ' . $data->pegawai->nip . '</a>';
+        }
+        return $return;
+    }
+
+    public function renderLinkToUbah($data)
     {
         $return = '';
         if (isset($data->pegawai)) {

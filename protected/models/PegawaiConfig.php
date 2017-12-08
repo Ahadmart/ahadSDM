@@ -115,7 +115,7 @@ class PegawaiConfig extends CActiveRecord
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->with = ['pegawai'];
         $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
-        $criteria->compare("(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id)", $this->keteranganPegawai, true);
+        $criteria->compare("(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id)", $this->keteranganPegawai, true);
         $criteria->compare("(SELECT gaji FROM pegawai_gaji WHERE pegawai_id = t.pegawai_id ORDER BY per_tanggal DESC LIMIT 1)", $this->gajiTerkini, true);
 
         $sort = [
@@ -126,8 +126,8 @@ class PegawaiConfig extends CActiveRecord
                     'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
                 ],
                 'keteranganPegawai' => [
-                    'asc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id)',
-                    'desc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.id) desc'
+                    'asc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id)',
+                    'desc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id) desc'
                 ],
                 'gajiTerkini' => [
                     'asc' => '(SELECT gaji FROM pegawai_gaji WHERE pegawai_id = t.pegawai_id ORDER BY per_tanggal DESC LIMIT 1)',
