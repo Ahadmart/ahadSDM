@@ -32,11 +32,6 @@ class m171207_012937_add_pegawai_mutasi extends CDbMigration
             CONSTRAINT `fk_mutasi_updatedby` FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
                 "], "ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
-//        $this->addForeignKey('fk_mutasi_bagian', 'pegawai_mutasi', 'bagian_id', 'bagian', 'id');
-//        $this->addForeignKey('fk_mutasi_cabang', 'pegawai_mutasi', 'cabang_id', 'cabang', 'id');
-//        $this->addForeignKey('fk_mutasi_jabatan', 'pegawai_mutasi', 'jabatan_id', 'jabatan', 'id');
-//        $this->addForeignKey('fk_mutasi_pegawai', 'pegawai_mutasi', 'pegawai_id', 'pegawai', 'id');
-//        $this->addForeignKey('fk_mutasi_updatedby', 'pegawai_mutasi', 'updated_by', 'user', 'id');
         // Isi data awal, jika ada
         $this->execute("
             INSERT INTO pegawai_mutasi (pegawai_id,nama,per_tanggal,jabatan_id,bagian_id,cabang_id,created_at,updated_by)
