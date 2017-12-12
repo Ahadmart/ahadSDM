@@ -9,8 +9,16 @@ class PegawaiController extends Controller
      */
     public function actionView($id)
     {
+        $this->layout = '//layouts/nobox';
+        
+        $daftarMutasi = new PegawaiMutasi('search');
+        $daftarMutasi->unsetAttributes();  // clear any default values
+        $daftarMutasi->pegawai_id = $id;
+        
         $this->render('view', [
             'model' => $this->loadModel($id),
+            'sudahPernahMutasi' => PegawaiMutasi::sudahPernah($id),
+            'daftarMutasi' => $daftarMutasi
         ]);
     }
 
@@ -20,7 +28,7 @@ class PegawaiController extends Controller
      */
     public function actionTambah()
     {
-        $this->layout = '//layouts/box_form';
+        $this->layout = '//layouts/box_form_medium';
 
         $model = new Pegawai;
 
@@ -36,6 +44,7 @@ class PegawaiController extends Controller
 
         $this->render('tambah', [
             'model' => $model,
+            'sudahPernahMutasi' => false
         ]);
     }
 
@@ -45,7 +54,7 @@ class PegawaiController extends Controller
      */
     public function actionUbah($id)
     {
-        $this->layout = '//layouts/box_form';
+        $this->layout = '//layouts/box_form_medium';
 
         $model = $this->loadModel($id);
 
@@ -61,6 +70,7 @@ class PegawaiController extends Controller
 
         $this->render('ubah', [
             'model' => $model,
+            'sudahPernahMutasi' => PegawaiMutasi::sudahPernah($id)
         ]);
     }
 

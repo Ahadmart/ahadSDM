@@ -62,7 +62,7 @@ class PegawaiconfigController extends Controller
 
         $gajiGrid = new PegawaiGaji('search');
         $gajiGrid->unsetAttributes();
-        $gajiGrid->pegawai_id = $id;
+        $gajiGrid->pegawai_id = $model->pegawai_id;
 
         $this->render('ubah', [
             'model' => $model,
@@ -157,7 +157,6 @@ class PegawaiconfigController extends Controller
 
         if (isset($_POST['PegawaiGaji'])) {
             $model->attributes = $_POST['PegawaiGaji'];
-            $model->pegawai_id = $id;
             if ($model->save()) {
                 $this->renderJSON(['sukses' => true]);
             }

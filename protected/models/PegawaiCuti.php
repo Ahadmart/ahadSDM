@@ -111,25 +111,26 @@ class PegawaiCuti extends CActiveRecord
         $criteria->compare('pegawai_id', $this->pegawai_id, true);
         $criteria->compare('nama', $this->nama, true);
         $criteria->compare('cuti', $this->cuti, true);
-        $criteria->compare('mulai_cuti', $this->mulai_cuti, true);
-        $criteria->compare('alasan_cuti_id', $this->alasan_cuti_id, true);
+        $criteria->compare("DATE_FORMAT(t.mulai_cuti, '%d-%m-%Y')", $this->mulai_cuti, true);
+        $criteria->compare('alasan_cuti_id', $this->alasan_cuti_id);
         $criteria->compare('keterangan', $this->keterangan, true);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
-        $criteria->with = ['pegawai', 'pegawai.cabang', 'pegawai.bagian', 'pegawai.jabatan'];
+        $criteria->with = ['pegawai'];
         $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
-        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
+        $criteria->compare("(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id)", $this->keteranganPegawai, true);
 
         $sort = [
+            'defaultOrder' => 't.mulai_cuti desc, pegawai.nama',
             'attributes' => [
                 'namaNipPegawai' => [
                     'asc' => 'CONCAT(pegawai.nama,pegawai.nip)',
                     'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
                 ],
                 'keteranganPegawai' => [
-                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
-                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
+                    'asc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id)',
+                    'desc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id) desc'
                 ],
                 '*'
             ]
@@ -183,7 +184,7 @@ class PegawaiCuti extends CActiveRecord
 
     public function getKeteranganPegawai()
     {
-        return $this->pegawai->cabang->nama . ' | ' . $this->pegawai->bagian->nama . ' | ' . $this->pegawai->jabatan->nama;
+        return $this->pegawai->cabangTerakhir . ' | ' . $this->pegawai->bagianTerakhir . ' | ' . $this->pegawai->jabatanTerakhir;
     }
 
 }

@@ -22,7 +22,7 @@ $form = $this->beginWidget('CActiveForm', [
 
     <?php echo $form->errorSummary($model, 'Error: Perbaiki input', null, ['class' => 'callout callout-danger']); ?>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-sm-12">
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'nip', ['class' => 'col-sm-2 control-label']); ?>
                 <div class="col-sm-10">
@@ -59,34 +59,6 @@ $form = $this->beginWidget('CActiveForm', [
                     </div>
                 </div>
             </div>
-
-        </div>
-        <div class="col-lg-6">
-
-            <div class="form-group">
-                <?php echo $form->labelEx($model, 'cabang_id', ['class' => 'col-sm-2 control-label']); ?>
-                <div class="col-sm-10">
-                    <?php echo $form->dropDownList($model, 'cabang_id', Cabang::getList(), ['class' => 'form-control', 'prompt' => 'Pilih satu..']); ?>
-                    <?php echo $form->error($model, 'cabang_id', ['class' => 'bg-red']); ?>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <?php echo $form->labelEx($model, 'bagian_id', ['class' => 'col-sm-2 control-label']); ?>
-                <div class="col-sm-10">
-                    <?php echo $form->dropDownList($model, 'bagian_id', Bagian::getList(), ['class' => 'form-control', 'prompt' => 'Pilih satu..']); ?>
-                    <?php echo $form->error($model, 'bagian_id', ['class' => 'bg-red']); ?>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <?php echo $form->labelEx($model, 'jabatan_id', ['class' => 'col-sm-2 control-label']); ?>
-                <div class="col-sm-10">
-                    <?php echo $form->dropDownList($model, 'jabatan_id', Jabatan::getList(), ['class' => 'form-control', 'prompt' => 'Pilih satu..']); ?>
-                    <?php echo $form->error($model, 'jabatan_id', ['class' => 'bg-red']); ?>
-                </div>
-            </div>
-
             <div class="form-group">
                 <?php echo $form->labelEx($model, 'telpon', ['class' => 'col-sm-2 control-label']); ?>
                 <div class="col-sm-10">

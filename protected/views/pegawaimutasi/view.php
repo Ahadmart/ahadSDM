@@ -1,18 +1,56 @@
 <?php
-/* @var $this PegawaiController */
-/* @var $model Pegawai */
+/* @var $this PegawaimutasiController */
+/* @var $model PegawaiMutasi */
 
 $this->breadcrumbs = [
-    'Pegawai' => ['index'],
+    'Pegawai Mutasi' => ['index'],
     $model->nama,
 ];
 
 $this->pageHeader['title'] = 'View';
-$this->pageHeader['desc'] = 'Pegawai';
-//$this->pageHeader['boxTitle'] = 'Pegawai: ' . $model->nama;
+$this->pageHeader['desc'] = 'Pegawai Mutasi';
+$this->pageHeader['boxTitle'] = 'Pegawai Mutasi: ' . $model->nama;
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->nama;
-
+if (!empty($flashmsg)) {
+    ?>
+    <div class="callout callout-success">
+        <?= $flashmsg ?>
+    </div>
+    <?php
+}
+?>
+<div class="row">
+    <div class="col-sm-12">        
+        <?php
+        $this->widget('BDetailView', [
+            'data' => $model,
+            'attributes' => [
+                'nama',
+                [
+                    'label' => 'NIP',
+                    'name' => 'pegawai.nip'
+                ],
+                [
+                    'label' => 'Cabang',
+                    'name' => 'cabang.nama'
+                ],
+                [
+                    'label' => 'Bagian',
+                    'name' => 'bagian.nama'
+                ],
+                [
+                    'label' => 'Jabatan',
+                    'name' => 'jabatan.nama'
+                ],
+                'per_tanggal',
+                'keterangan',
+            ],
+        ]);
+        ?>
+    </div>
+</div>
+<?php
 $this->menu = [
     [
         'submenuOptions' => ['class' => 'btn-group visible-sm-block visible-md-block visible-lg-block'],
@@ -76,69 +114,3 @@ $this->menu = [
         ],
     ]
 ];
-?>
-
-<div class="col-md-6 col-lg-7">
-    <div class="box box-primary">
-        <div class="box-header <?= $this->box['headerBorder'] ? 'with-border' : '' ?>">
-            <h3 class="box-title">Pegawai: <?= $model->nama ?></h3>
-            <div class="box-tools">
-                <?php
-                $this->widget('BTombolBox', [
-                    'encodeLabel' => false,
-                    'id' => '',
-                    'items' => $this->menu,
-                ]);
-                ?>
-            </div>
-        </div>
-        <?php
-        $pegawai = [
-            'nip',
-            'nama',
-            'alamat',
-            'tanggal_lahir',
-            'telpon',
-            'perusahaan',
-        ];
-        $this->widget('BDetailView', [
-            'data' => $model,
-            'attributes' => $pegawai,
-        ]);
-        ?>
-    </div>
-</div>
-
-<div class="col-md-6 col-lg-5">
-    <div class="box box-info">
-        <div class="box-header <?= $this->box['headerBorder'] ? 'with-border' : '' ?>">
-            <h3 class="box-title">Riwayat Kerja</h3>
-        </div>
-        <div class="box-body">
-            <?php
-            $this->widget('BGridView', [
-                'id' => 'pegawai-mutasi-grid',
-                'dataProvider' => $daftarMutasi->search(),
-                'filter' => null,
-                'htmlOptions' => ['style' => 'width: 100%'],
-                'columns' => [
-                    [
-                        'class' => 'BDataColumn',
-                        'name' => 'keteranganPegawai',
-                        'value' => '$data->getKeteranganPegawai()'
-                    ],
-                    [
-                        'class' => 'BDataColumn',
-                        'name' => 'per_tanggal'
-                    ],
-                    [
-                        'class' => 'BDataColumn',
-                        'name' => 'keterangan',
-                        'header' => 'Ket'
-                    ],
-                ]
-            ]);
-            ?>
-        </div>
-    </div>
-</div>

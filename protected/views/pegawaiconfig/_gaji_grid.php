@@ -12,7 +12,7 @@ $this->widget('BGridView', [
         [
             'class' => 'BDataColumn',
             'name' => 'gaji',
-            'value' => 'number_format($data->gaji, 2, ",", ".")'
+            'value' => 'number_format($data->gaji, 0, ",", ".")'
         ],
     ]
 ]);

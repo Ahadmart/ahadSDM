@@ -1,21 +1,20 @@
 <?php
+/* @var $this PegawaimutasiController */
+/* @var $model PegawaiMutasi */
 
-/* @var $this PegawaiController */
-/* @var $model Pegawai */
-
-$this->breadcrumbs = [
-    'Pegawai' => ['index'],
-    $model->nama => ['view', 'id' => $model->id],
-    'Ubah',
+$this->breadcrumbs=[
+	'Pegawai Mutasi'=>['index'],
+	$model->nama=>['view','id'=>$model->id],
+	'Ubah',
 ];
 
 $this->pageHeader['title'] = 'Ubah';
-$this->pageHeader['desc'] = 'Edit Pegawai';
-$this->pageHeader['boxTitle'] = 'Pegawai: ' . $model->nama;
+$this->pageHeader['desc'] = 'Edit Pegawai Mutasi';
+$this->pageHeader['boxTitle'] = 'Pegawai Mutasi: '. $model->nama;
 
-$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->nama;
+$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'].' '.$model->nama;
 
-$this->renderPartial('_form', ['model' => $model, 'sudahPernahMutasi' => $sudahPernahMutasi]);
+$this->renderPartial('_form', ['model'=>$model]);
 
 $this->menu = [
     [

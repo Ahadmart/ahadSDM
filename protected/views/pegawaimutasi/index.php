@@ -1,14 +1,14 @@
 <?php
-/* @var $this PegawaiconfigController */
-/* @var $model PegawaiConfig */
+/* @var $this PegawaimutasiController */
+/* @var $model PegawaiMutasi */
 
 $this->breadcrumbs = [
-    'Pegawai Config' => ['index'],
+    'Mutasi Pegawai' => ['index'],
     'Index',
 ];
 
-$this->pageHeader['title'] = 'Pegawai Config';
-$this->pageHeader['desc'] = 'Daftar Pegawai Config';
+$this->pageHeader['title'] = 'Mutasi Pegawai';
+$this->pageHeader['desc'] = 'Daftar Mutasi Pegawai';
 $this->pageHeader['boxTitle'] = 'Index';
 
 $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
@@ -21,14 +21,14 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
     <div class="row" style="overflow: auto">
         <div class="col-sm-12">
             <?php
-            /* /* Agar focus tetap di input cari nama/nip setelah pencarian */
+            /*  Agar focus tetap di input cari nama/nip setelah pencarian */
             Yii::app()->clientScript->registerScript('autoFocus', ''
                     . '$( document ).ajaxComplete(function() {'
-                    . '$("input[name=\'PegawaiConfig[namaNipPegawai]\'").select();'
+                    . '$("input[name=\'PegawaiMutasi[namaNipPegawai]\'").select();'
                     . '});');
 
             $this->widget('BGridView', [
-                'id' => 'pegawai-config-grid',
+                'id' => 'pegawai-mutasi-grid',
                 'dataProvider' => $model->search(),
                 'filter' => $model,
                 'htmlOptions' => ['style' => 'width: 100%'],
@@ -39,7 +39,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                         'header' => '<span class="ak">N</span>ama / NIP',
                         'accesskey' => 'n',
                         'type' => 'raw',
-                        'value' => [$this, 'renderLinkToUbah'],
+                        'value' => [$this, 'renderLinkToView'],
                         'autoFocus' => true
                     ],
                     [
@@ -49,32 +49,11 @@ $this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'];
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'bpjs',
-                        'value' => '$data->namaBpjs',
-                        'filter' => PegawaiConfig::listBpjs()
+                        'name' => 'per_tanggal'
                     ],
                     [
                         'class' => 'BDataColumn',
-                        'name' => 'cuti_tahunan',
-                        'htmlOptions' => ['class' => 'text-right'],
-                        'headerHtmlOptions' => ['class' => 'text-right'],
-                        'filter' => false
-                    ],
-                    [
-                        'class' => 'BDataColumn',
-                        'name' => 'tunjangan_anak',
-                        'value' => 'number_format($data->tunjangan_anak, 2, ",", ".")',
-                        'htmlOptions' => ['class' => 'text-right'],
-                        'headerHtmlOptions' => ['class' => 'text-right'],
-                        'filter' => false
-                    ],
-                    [
-                        'class' => 'BDataColumn',
-                        'header' => 'Gaji',
-                        'name' => 'gajiTerkini',
-                        'value' => '$data->gajiTerakhir',
-                        'htmlOptions' => ['class' => 'text-right'],
-                        'headerHtmlOptions' => ['class' => 'text-right']
+                        'name' => 'keterangan'
                     ],
                     ['class' => 'BButtonColumn']
                 ]

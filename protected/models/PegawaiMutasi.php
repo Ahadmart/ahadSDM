@@ -1,38 +1,40 @@
 <?php
 
 /**
- * This is the model class for table "pegawai_config".
+ * This is the model class for table "pegawai_mutasi".
  *
- * The followings are the available columns in table 'pegawai_config':
+ * The followings are the available columns in table 'pegawai_mutasi':
  * @property string $id
  * @property string $pegawai_id
- * @property string $cuti_tahunan
- * @property integer $bpjs
- * @property string $tunjangan_anak
+ * @property string $nama
+ * @property string $per_tanggal
+ * @property string $keterangan
+ * @property string $jabatan_id
+ * @property string $bagian_id
+ * @property string $cabang_id
  * @property string $updated_at
  * @property string $updated_by
  * @property string $created_at
  *
  * The followings are the available model relations:
+ * @property Bagian $bagian
+ * @property Cabang $cabang
+ * @property Jabatan $jabatan
  * @property Pegawai $pegawai
  * @property User $updatedBy
  */
-class PegawaiConfig extends CActiveRecord
+class PegawaiMutasi extends CActiveRecord
 {
-
-    const BPJS_TIDAK_ADA = 0;
-    const BPJS_ADA = 1;
 
     public $namaNipPegawai;
     public $keteranganPegawai;
-    public $gajiTerkini;
 
     /**
      * @return string the associated database table name
      */
     public function tableName()
     {
-        return 'pegawai_config';
+        return 'pegawai_mutasi';
     }
 
     /**
@@ -43,15 +45,14 @@ class PegawaiConfig extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return [
-            ['pegawai_id', 'required', 'message' => '[{attribute}] harus dipilih!'],
-            ['bpjs', 'numerical', 'integerOnly' => true],
-            ['pegawai_id, updated_by', 'length', 'max' => 10],
-            ['cuti_tahunan', 'length', 'max' => 5],
-            ['tunjangan_anak', 'length', 'max' => 18],
+            ['pegawai_id, nama, per_tanggal, jabatan_id, bagian_id, cabang_id', 'required', 'message' => '[{attribute}] harus diisi!'],
+            ['pegawai_id, jabatan_id, bagian_id, cabang_id, updated_by', 'length', 'max' => 10],
+            ['nama', 'length', 'max' => 50],
+            ['keterangan', 'length', 'max' => 1000],
             ['created_at, updated_at, updated_by', 'safe'],
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            ['id, pegawai_id, cuti_tahunan, bpjs, tunjangan_anak, updated_at, updated_by, created_at, namaNipPegawai, keteranganPegawai, gajiTerkini', 'safe', 'on' => 'search'],
+            ['id, pegawai_id, nama, per_tanggal, keterangan, jabatan_id, bagian_id, cabang_id, updated_at, updated_by, created_at, namaNipPegawai, keteranganPegawai', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -63,6 +64,9 @@ class PegawaiConfig extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return [
+            'bagian' => [self::BELONGS_TO, 'Bagian', 'bagian_id'],
+            'cabang' => [self::BELONGS_TO, 'Cabang', 'cabang_id'],
+            'jabatan' => [self::BELONGS_TO, 'Jabatan', 'jabatan_id'],
             'pegawai' => [self::BELONGS_TO, 'Pegawai', 'pegawai_id'],
             'updatedBy' => [self::BELONGS_TO, 'User', 'updated_by'],
         ];
@@ -76,9 +80,12 @@ class PegawaiConfig extends CActiveRecord
         return [
             'id' => 'ID',
             'pegawai_id' => 'Pegawai',
-            'cuti_tahunan' => 'Cuti Tahunan (Hari)',
-            'bpjs' => 'BPJS',
-            'tunjangan_anak' => 'Tunjangan Anak',
+            'nama' => 'Nama',
+            'per_tanggal' => 'Per Tanggal',
+            'keterangan' => 'Keterangan',
+            'jabatan_id' => 'Jabatan',
+            'bagian_id' => 'Bagian',
+            'cabang_id' => 'Cabang',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
@@ -107,36 +114,33 @@ class PegawaiConfig extends CActiveRecord
 
         $criteria->compare('id', $this->id);
         $criteria->compare('pegawai_id', $this->pegawai_id);
-        $criteria->compare('cuti_tahunan', $this->cuti_tahunan, true);
-        $criteria->compare('bpjs', $this->bpjs);
-        $criteria->compare('tunjangan_anak', $this->tunjangan_anak, true);
+        $criteria->compare('nama', $this->nama, true);
+        $criteria->compare("DATE_FORMAT(t.per_tanggal, '%d-%m-%Y')", $this->per_tanggal, true);
+        $criteria->compare('keterangan', $this->keterangan, true);
+        $criteria->compare('jabatan_id', $this->jabatan_id);
+        $criteria->compare('bagian_id', $this->bagian_id);
+        $criteria->compare('cabang_id', $this->cabang_id);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('updated_by', $this->updated_by, true);
         $criteria->compare('created_at', $this->created_at, true);
-        $criteria->with = ['pegawai'];
+        $criteria->with = ['pegawai', 'cabang', 'bagian', 'jabatan'];
         $criteria->compare('CONCAT(pegawai.nama,pegawai.nip)', $this->namaNipPegawai, true);
-        $criteria->compare("(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id)", $this->keteranganPegawai, true);
-        $criteria->compare("(SELECT gaji FROM pegawai_gaji WHERE pegawai_id = t.pegawai_id ORDER BY per_tanggal DESC LIMIT 1)", $this->gajiTerkini, true);
+        $criteria->compare("CONCAT(cabang.nama, bagian.nama, jabatan.nama)", $this->keteranganPegawai, true);
 
         $sort = [
-            'defaultOrder' => 't.id desc',
+            'defaultOrder' => 't.per_tanggal desc, pegawai.nama',
             'attributes' => [
                 'namaNipPegawai' => [
                     'asc' => 'CONCAT(pegawai.nama,pegawai.nip)',
                     'desc' => 'CONCAT(pegawai.nama,pegawai.nip) desc'
                 ],
                 'keteranganPegawai' => [
-                    'asc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id)',
-                    'desc' => '(SELECT CONCAT(cabang.nama,bagian.nama,jabatan.nama) FROM pegawai_mutasi JOIN (SELECT pegawai_id, MAX(per_tanggal) per_tanggal FROM pegawai_mutasi GROUP BY pegawai_id) t_max ON t_max.pegawai_id = pegawai_mutasi.pegawai_id AND t_max.per_tanggal = pegawai_mutasi.per_tanggal JOIN cabang ON cabang.id = pegawai_mutasi.cabang_id JOIN bagian ON bagian.id = pegawai_mutasi.bagian_id JOIN jabatan ON jabatan.id = pegawai_mutasi.jabatan_id WHERE pegawai_mutasi.pegawai_id = t.pegawai_id) desc'
-                ],
-                'gajiTerkini' => [
-                    'asc' => '(SELECT gaji FROM pegawai_gaji WHERE pegawai_id = t.pegawai_id ORDER BY per_tanggal DESC LIMIT 1)',
-                    'desc' => '(SELECT gaji FROM pegawai_gaji WHERE pegawai_id = t.pegawai_id ORDER BY per_tanggal DESC LIMIT 1) desc'
+                    'asc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama)',
+                    'desc' => 'CONCAT(cabang.nama, bagian.nama, jabatan.nama) desc'
                 ],
                 '*'
             ]
         ];
-
         return new CActiveDataProvider($this, [
             'criteria' => $criteria,
             'sort' => $sort
@@ -147,7 +151,7 @@ class PegawaiConfig extends CActiveRecord
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return PegawaiConfig the static model class
+     * @return PegawaiMutasi the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -165,17 +169,17 @@ class PegawaiConfig extends CActiveRecord
         return parent::beforeSave();
     }
 
-    public static function listBpjs()
+    public function beforeValidate()
     {
-        return [
-            self::BPJS_TIDAK_ADA => 'Tidak',
-            self::BPJS_ADA => 'Ada',
-        ];
+        $this->nama = Yii::app()->db->createCommand('select nama from pegawai where id=:pegawaiId')->bindValue(':pegawaiId', $this->pegawai_id)->queryRow()['nama'];
+        $this->per_tanggal = !empty($this->per_tanggal) ? date_format(date_create_from_format('d-m-Y', $this->per_tanggal), 'Y-m-d') : NULL;
+        return parent::beforeValidate();
     }
 
-    public function getNamaBpjs()
+    public function afterFind()
     {
-        return $this->listBpjs()[$this->bpjs];
+        $this->per_tanggal = !is_null($this->per_tanggal) ? date_format(date_create_from_format('Y-m-d', $this->per_tanggal), 'd-m-Y') : '0';
+        return parent::afterFind();
     }
 
     public function getNamaNipPegawai()
@@ -185,24 +189,17 @@ class PegawaiConfig extends CActiveRecord
 
     public function getKeteranganPegawai()
     {
-        return $this->pegawai->cabangTerakhir . ' | ' . $this->pegawai->bagianTerakhir . ' | ' . $this->pegawai->jabatanTerakhir;
+        return $this->cabang->nama . ' | ' . $this->bagian->nama . ' | ' . $this->jabatan->nama;
     }
 
-    public function getGajiTerakhirRaw()
+    /**
+     * Untuk mengecek apakah pegawaiId sudah pernah mutasi atau belum
+     * @param int $pegawaiId
+     * @return bool true jika sudah pernah, false jika belum pernah
+     */
+    public static function sudahPernah($pegawaiId)
     {
-        $hasil = Yii::app()->db->createCommand("
-            select gaji
-            from " . PegawaiGaji::model()->tableName() . "
-            where pegawai_id = {$this->pegawai_id}
-            order by per_tanggal desc
-            limit 1
-			  ")->queryRow();
-        return $hasil['gaji'];
-    }
-
-    public function getGajiTerakhir()
-    {
-        return number_format($this->getGajiTerakhirRaw(), 2, ',', '.');
+        return is_null(self::model()->find('pegawai_id=:pegawaiId', [':pegawaiId' => $pegawaiId])) ? false : true;
     }
 
 }

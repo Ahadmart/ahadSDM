@@ -138,6 +138,7 @@
                                     'submenuOptions' => ['class' => 'treeview-menu'],
                                     'items' => [
                                         ['label' => '<i class="fa fa-calendar-minus-o fa-fw"></i><span>' . ' Cuti</span>', 'url' => ['/pegawaicuti/index']],
+                                        ['label' => '<i class="fa fa-handshake-o fa-fw"></i><span>' . ' Mutasi</span>', 'url' => ['/pegawaimutasi/index']],
                                     ],
                                 ],
                                 [

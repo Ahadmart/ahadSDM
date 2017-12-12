@@ -1,6 +1,6 @@
 <?php
 
-class PegawaicutiController extends Controller
+class PegawaimutasiController extends Controller
 {
 
     /**
@@ -9,8 +9,6 @@ class PegawaicutiController extends Controller
      */
     public function actionView($id, $flashmsg = '')
     {
-        $this->layout = '//layouts/box_medium';
-
         $this->render('view', [
             'model' => $this->loadModel($id),
             'flashmsg' => $flashmsg
@@ -25,15 +23,15 @@ class PegawaicutiController extends Controller
     {
         $this->layout = '//layouts/box_form';
 
-        $model = new PegawaiCuti;
+        $model = new PegawaiMutasi;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['PegawaiCuti'])) {
-            $model->attributes = $_POST['PegawaiCuti'];
+        if (isset($_POST['PegawaiMutasi'])) {
+            $model->attributes = $_POST['PegawaiMutasi'];
             if ($model->save()) {
-                $this->redirect(['view', 'id' => $model->id, 'flashmsg' => 'Cuti berhasil diproses']);
+                $this->redirect(['view', 'id' => $model->id, 'flashmsg' => 'Mutasi berhasil diproses']);
             }
         }
 
@@ -55,10 +53,10 @@ class PegawaicutiController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['PegawaiCuti'])) {
-            $model->attributes = $_POST['PegawaiCuti'];
+        if (isset($_POST['PegawaiMutasi'])) {
+            $model->attributes = $_POST['PegawaiMutasi'];
             if ($model->save()) {
-                $this->redirect(['view', 'id' => $id, 'flashmsg' => 'Data cuti berhasil diperbaharui']);
+                $this->redirect(['view', 'id' => $id, 'flashmsg' => 'Data mutasi berhasil diperbaharui']);
             }
         }
 
@@ -86,10 +84,10 @@ class PegawaicutiController extends Controller
      */
     public function actionIndex()
     {
-        $model = new PegawaiCuti('search');
+        $model = new PegawaiMutasi('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['PegawaiCuti'])) {
-            $model->attributes = $_GET['PegawaiCuti'];
+        if (isset($_GET['PegawaiMutasi'])) {
+            $model->attributes = $_GET['PegawaiMutasi'];
         }
 
         $this->render('index', [
@@ -101,12 +99,12 @@ class PegawaicutiController extends Controller
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return PegawaiCuti the loaded model
+     * @return PegawaiMutasi the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model = PegawaiCuti::model()->findByPk($id);
+        $model = PegawaiMutasi::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -114,28 +112,17 @@ class PegawaicutiController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param PegawaiCuti $model the model to be validated
+     * @param PegawaiMutasi $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'pegawai-cuti-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'pegawai-mutasi-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
     }
 
     public function renderLinkToView($data)
-    {
-        $return = '';
-        if (isset($data->pegawai)) {
-            $return = '<a href="' .
-                    $this->createUrl('view', ['id' => $data->id]) . '">' .
-                    $data->pegawai->nama . ' / ' . $data->pegawai->nip . '</a>';
-        }
-        return $return;
-    }
-
-    public function renderLinkToUbah($data)
     {
         $return = '';
         if (isset($data->pegawai)) {

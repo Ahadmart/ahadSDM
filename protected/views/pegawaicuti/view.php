@@ -2,49 +2,46 @@
 /* @var $this PegawaicutiController */
 /* @var $model PegawaiCuti */
 
-$this->breadcrumbs=[
-	'Pegawai Cuti'=>['index'],
-	$model->nama,
+$this->breadcrumbs = [
+    'Pegawai Cuti' => ['index'],
+    $model->nama,
 ];
 
 $this->pageHeader['title'] = 'View';
 $this->pageHeader['desc'] = 'Pegawai Cuti';
-$this->pageHeader['boxTitle'] = 'Pegawai Cuti: '. $model->nama;
+$this->pageHeader['boxTitle'] = 'Pegawai Cuti: ' . $model->nama;
 
-$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'].' '.$model->nama;
+$this->pageTitle = Yii::app()->name . ' - ' . $this->pageHeader['desc'] . ' ' . $model->nama;
 
+if (!empty($flashmsg)) {
+    ?>
+    <div class="callout callout-success">
+        <?= $flashmsg ?>
+    </div>
+    <?php
+}
 ?>
 <div class="row">
     <div class="col-sm-12">
-<?php $this->widget('BDetailView', [
-	'data'=>$model,
-	'attributes'=>[
-		'nama',
+        <?php
+        $this->widget('BDetailView', [
+            'data' => $model,
+            'attributes' => [
+                'nama',
                 [
                     'label' => 'NIP',
                     'name' => 'pegawai.nip'
                 ],
-                [
-                    'label' => 'Cabang',
-                    'name' => 'pegawai.cabang.nama'
-                ],
-                [
-                    'label' => 'Bagian',
-                    'name' => 'pegawai.bagian.nama'
-                ],
-                [
-                    'label' => 'Jabatan',
-                    'name' => 'pegawai.jabatan.nama'
-                ],
-		'cuti',
-		'mulai_cuti',
+                'cuti',
+                'mulai_cuti',
                 [
                     'label' => 'Alasan Cuti',
                     'name' => 'alasanCuti.nama'
                 ],
-		'keterangan',
-	],
-]); ?>
+                'keterangan',
+            ],
+        ]);
+        ?>
     </div>
 </div>
 <?php
