@@ -188,6 +188,41 @@ class Pegawai extends CActiveRecord
         return parent::afterFind();
     }
 
+    // public static function getListPanjang()
+    // {
+    //     $sql = "
+    //     SELECT 
+    //         pegawai.id,
+    //         pegawai.nama,
+    //         pegawai.nip,
+    //         cabang.nama namaCabang,
+    //         bagian.nama namaBagian,
+    //         jabatan.nama namaJabatan
+    //     FROM
+    //         pegawai_mutasi t
+    //             JOIN
+    //         (SELECT 
+    //             pegawai_id, MAX(per_tanggal) per_tanggal_max
+    //         FROM
+    //             pegawai_mutasi
+    //         GROUP BY pegawai_id) AS t_max ON t.pegawai_id = t_max.pegawai_id
+    //             AND t.per_tanggal = t_max.per_tanggal_max
+    //             JOIN
+    //         pegawai ON t.pegawai_id = pegawai.id
+    //             JOIN
+    //         cabang ON t.cabang_id = cabang.id
+    //             JOIN
+    //         bagian ON t.bagian_id = bagian.id
+    //             JOIN
+    //         jabatan ON t.jabatan_id = jabatan.id
+    //     ORDER BY pegawai.nama
+    //    ";
+    //     $model = Yii::app()->db->createCommand($sql)->queryAll();
+    //     return CHtml::listData($model, 'id', function($model) {
+    //                 return $model['nama'] . ' [' . $model['nip'] . ']' . ' [' . $model['namaCabang'] . '] [' . $model['namaBagian'] . '] [' . $model['namaJabatan'] . ']';
+    //             });
+    // }
+
     public static function getListPanjang()
     {
         $sql = "
@@ -199,21 +234,21 @@ class Pegawai extends CActiveRecord
             bagian.nama namaBagian,
             jabatan.nama namaJabatan
         FROM
-            pegawai_mutasi t
-                JOIN
+            pegawai 
+                LEFT JOIN
+            pegawai_mutasi t ON t.pegawai_id = pegawai.id
+                LEFT JOIN
             (SELECT 
                 pegawai_id, MAX(per_tanggal) per_tanggal_max
             FROM
                 pegawai_mutasi
             GROUP BY pegawai_id) AS t_max ON t.pegawai_id = t_max.pegawai_id
                 AND t.per_tanggal = t_max.per_tanggal_max
-                JOIN
-            pegawai ON t.pegawai_id = pegawai.id
-                JOIN
+                LEFT JOIN
             cabang ON t.cabang_id = cabang.id
-                JOIN
+                LEFT JOIN
             bagian ON t.bagian_id = bagian.id
-                JOIN
+                LEFT JOIN
             jabatan ON t.jabatan_id = jabatan.id
         ORDER BY pegawai.nama
        ";
